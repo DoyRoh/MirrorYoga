@@ -173,6 +173,7 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
 @media (max-width:1500px){.grp .chips{right:16px}.grp .breath{top:auto;bottom:10px}}
 @media (max-width:900px),(max-height:520px){
  .app{height:auto;min-height:100dvh}
+ .top{position:sticky;top:0;z-index:12;background:rgba(238,243,247,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
  .stage,.grp .stage{grid-template-columns:minmax(0,1fr)}
  .guide{grid-template-rows:auto auto}
  .figbox{display:flex;flex-direction:column}
@@ -333,6 +334,7 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
  <footer class="seq">
   <div class="cards" id="cards"></div>
   <div class="ctrl">
+   <button class="ibtn" id="homeBtn2" type="button" aria-label="처음으로" title="과정 고르는 처음 화면으로" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5L12 5l8 6.5"/><path d="M6.5 10v9h11v-9"/></svg></button>
    <button class="ibtn" id="prevBtn" type="button" aria-label="이전 자세" title="이전 자세 (←)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 5.5l-9 6.5 9 6.5zM6 5h2.4v14H6z"/></svg></button>
    <button class="btn" id="playBtn" type="button"><svg id="playIco" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg><span id="playTxt">일시정지</span></button>
    <button class="ibtn" id="nextBtn" type="button" aria-label="다음 자세" title="다음 자세 (→)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5.5l9 6.5-9 6.5zM15.6 5H18v14h-2.4z"/></svg></button>
@@ -1042,7 +1044,7 @@ function hud(dt){
   setH($('clock'),ph==='active'&&live?(CFG.limit?`남은 시간 <b>${mmss(CFG.limit-S.pt)}</b>`:`경과 <b>${mmss(S.pt)}</b>`):CFG.limit?`자세당 <b>${CFG.limit}초</b>`:'제한 시간 없음');
   const br=$('breath');br.hidden=!(live&&ph==='active');
   if(!br.hidden)setT($('breathTxt'),RM?'편안하게 숨 쉬어요':Math.floor(S.pt/4)%2?'천천히 내쉬고':'깊게 들이마시고');
-  $('modeBtn').hidden=S.mode!=='demo';$('homeBtn').hidden=!S.mode;
+  $('modeBtn').hidden=S.mode!=='demo';$('homeBtn').hidden=$('homeBtn2').hidden=!S.mode;
 }
 function setPlay(){
   $('playBtn').hidden=!S.mode;
@@ -1128,7 +1130,7 @@ $('camBtn').onclick=startCamera;
 $('demoBtn').onclick=()=>begin('demo');
 // 데모 중에 누르면 바로 카메라로 바꾼다. 카메라 중에 누르면 시작 화면으로
 $('modeBtn').onclick=()=>{home();startCamera()};
-$('homeBtn').onclick=()=>{home();if(innerWidth<=900)$('mirror').scrollIntoView({block:'start',behavior:'smooth'})};
+$('homeBtn').onclick=$('homeBtn2').onclick=()=>{home();if(innerWidth<=900)$('mirror').scrollIntoView({block:'start',behavior:'smooth'})};
 // 아이폰처럼 전체 화면을 못 쓰는 기기에서는 버튼을 숨긴다
 if(!(document.fullscreenEnabled||document.webkitFullscreenEnabled))$('fsBtn').hidden=true;
 $('setBtn').onclick=()=>{renderSettings();openModal('setModal')};
