@@ -1048,20 +1048,20 @@ function arrowKeys(pl,now){
 }
 function drawArrow(a,col,ph,P,s){
   // 꼬리가 늘 조금은 보이게(.18부터 시작) — 머리만 있으면 방향이 헷갈린다
-  const lw=Math.max(5,cv.height/105),hd=lw*2.4,prog=RM?1:.18+.82*ease(Math.min(1,ph/.72)),al=RM?1:ph>.82?1-(ph-.82)/.18:1;
+  const lw=Math.max(10,cv.height/52),hd=lw*2.3,prog=RM?1:.18+.82*ease(Math.min(1,ph/.72)),al=1;
   let tip,tan;
   // 사람이 작게 찍혀도 화살표는 일정 크기 이상
-  const R=Math.max(a.r*s||0,cv.height*.075),Ln=Math.max(a.len*s||0,cv.height*.085);
+  const R=Math.max(a.r*s||0,cv.height*.1),Ln=Math.max(a.len*s||0,cv.height*.12);
   const path=(t)=>{cx.beginPath();if(a.t==='arc'){const c=P(a.c);cx.arc(c[0],c[1],R,a.a0,a.a0+a.sw*t,a.sw<0)}else{const p=P(a.p);cx.moveTo(p[0],p[1]);cx.lineTo(p[0]+a.v[0]*Ln*t,p[1]+a.v[1]*Ln*t)}};
   if(a.t==='arc'){const c=P(a.c),an=a.a0+a.sw*prog,g=Math.sign(a.sw);tip=[c[0]+Math.cos(an)*R,c[1]+Math.sin(an)*R];tan=[-Math.sin(an)*g,Math.cos(an)*g]}
   else{const p=P(a.p);tip=[p[0]+a.v[0]*Ln*prog,p[1]+a.v[1]*Ln*prog];tan=a.v}
   cx.lineCap='round';cx.lineJoin='round';
-  cx.globalAlpha=.32;path(1);cx.strokeStyle=col;cx.lineWidth=lw*.7;cx.stroke();
-  cx.globalAlpha=al;path(prog);cx.strokeStyle='rgba(4,24,27,.9)';cx.lineWidth=lw+5;cx.stroke();cx.strokeStyle=col;cx.lineWidth=lw;cx.stroke();
+  cx.globalAlpha=.45;path(1);cx.strokeStyle=col;cx.lineWidth=lw*.75;cx.stroke();
+  cx.globalAlpha=al;path(prog);cx.strokeStyle='rgba(4,24,27,.9)';cx.lineWidth=lw*1.45;cx.stroke();cx.strokeStyle=col;cx.lineWidth=lw;cx.stroke();
   // 뾰족한 화살촉 (꼭짓점 각 약 40°)
   const n=[-tan[1],tan[0]],b=[tip[0]-tan[0]*hd*.55,tip[1]-tan[1]*hd*.55];
   cx.beginPath();cx.moveTo(tip[0]+tan[0]*hd*1.05,tip[1]+tan[1]*hd*1.05);cx.lineTo(b[0]+n[0]*hd*.58,b[1]+n[1]*hd*.58);cx.lineTo(b[0]-n[0]*hd*.58,b[1]-n[1]*hd*.58);cx.closePath();
-  cx.fillStyle=col;cx.strokeStyle='rgba(4,24,27,.9)';cx.lineWidth=3;cx.stroke();cx.fill();
+  cx.fillStyle=col;cx.strokeStyle='rgba(4,24,27,.9)';cx.lineWidth=Math.max(3,lw*.4);cx.stroke();cx.fill();
   cx.globalAlpha=1;
 }
 function guideArrows(J,P,s,pl,now){
