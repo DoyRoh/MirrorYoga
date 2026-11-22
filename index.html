@@ -112,6 +112,12 @@ button{font:inherit;color:inherit}
 .lettering{width:clamp(170px,15vw,230px);height:auto;color:var(--ink);overflow:visible;margin:0 0 4px -4px}
 .icard h1{font-size:clamp(24px,2vw,34px);line-height:1.15}
 .icard p{margin:0;color:var(--mute);font-size:clamp(15px,1.05vw,18px);text-wrap:pretty}
+.course{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.crs{display:grid;justify-items:center;align-content:start;gap:2px;padding:10px 6px 12px;border-radius:20px;border:1px solid #fff;background:rgba(255,255,255,.7);cursor:pointer;text-align:center;color:var(--ink)}
+.crs svg{width:46px;height:46px}
+.crs b{font-size:15px;font-weight:700;letter-spacing:-.02em;word-break:keep-all}
+.crs span{font-size:12px;color:var(--mute);word-break:keep-all}
+.crs[aria-pressed=true]{background:#fff;border-color:var(--acc);box-shadow:0 0 0 1.5px var(--acc),0 6px 16px rgba(91,142,194,.18)}
 .tips{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .tips li{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:center;background:rgba(255,255,255,.75);border:1px solid #fff;border-radius:18px;padding:10px 14px;font-size:clamp(15px,1vw,17px)}
 .tips svg{width:40px;height:40px}
@@ -205,6 +211,7 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
  .mirror .intro{position:absolute}
  .mirror:has(.intro:not([hidden])) .view{display:block}
  .intro{place-items:start center;padding:14px}
+ .crs svg{display:none}.crs{padding:8px 4px}.crs b{font-size:14px}.crs span{display:none}
  .lettering{width:104px}.icard{gap:8px}.icard h1{font-size:20px}.icard p{font-size:13px}.tips{display:none}.btn{min-height:44px}
  .hud-bot{padding:6px 8px}.say{font-size:17px;padding:6px 12px;min-height:0}.hold{font-size:12px}.solo{gap:4px}
  .hud-top{left:8px;right:8px;top:8px}.tag{font-size:12px;padding:4px 10px}
@@ -239,7 +246,7 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
   <symbol id="g-mi" viewBox="0 0 100 100" overflow="visible"><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 13V80H54V22H4"/><path d="M78 6V95"/></g></symbol>
   <symbol id="g-reo" viewBox="0 0 100 100" overflow="visible"><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H50V48H12V80H58"/><path d="M80 6V95M60 50H80"/></g></symbol>
   <symbol id="g-yo" viewBox="0 0 100 100" overflow="visible"><circle cx="50" cy="31" r="23" fill="#dbe8f3" stroke="#5b8ec2" stroke-width="5.5"/><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M38 58V78M62 58V78M4 80H96"/></g></symbol>
-  <symbol id="g-ga" viewBox="0 0 100 100" overflow="visible"><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22H50C50 54 38 74 14 90"/><path d="M78.0 -8.0L78.3 -6.0L78.8 -4.0L79.4 -2.0L80.0 0.0L80.4 2.0L80.6 4.0L80.5 6.0L80.1 8.0L79.5 10.0L78.5 12.0L77.4 14.0L76.3 16.0L75.2 18.0L74.3 20.0L73.7 22.0L73.5 24.0L73.7 26.0L74.3 28.0L75.2 30.0L76.5 32.0L78.0 34.0L79.5 36.0L80.9 38.0L82.1 40.0L83.0 42.0L83.4 44.0L83.3 46.0L82.7 48.0L81.7 50.0L80.4 52.0L78.8 54.0L77.2 56.0L75.6 58.0L74.3 60.0L73.3 62.0L72.7 64.0L72.7 66.0L73.1 68.0L73.9 70.0L75.1 72.0L76.5 74.0L78.0 76.0L79.4 78.0L80.7 80.0L81.6 82.0L82.2 84.0L82.4 86.0L82.1 88.0L81.5 90.0L80.7 92.0L79.6 94.0L78.5 96.0L77.5 98.0L76.6 100.0L76.0 102.0L75.7 104.0L75.7 106.0L75.9 108.0L76.4 110.0L76.9 112.0L77.5 114.0L78.0 116.0"></path><path d="M80.0 50.0L82.0 51.1L84.0 51.5L86.0 51.3L88.0 50.5L90.0 49.3L92.0 48.2L94.0 47.6L96.0 47.5L98.0 48.1L100.0 49.1L102.0 50.1L104.0 50.5L106.0 50.0+0.0j"></path></g></symbol>
+  <symbol id="g-ga" viewBox="0 0 100 100" overflow="visible"><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22H50C50 54 38 74 14 90"/><path d="M78.0 -8.0L78.3 -6.0L78.8 -4.0L79.4 -2.0L80.0 0.0L80.4 2.0L80.6 4.0L80.5 6.0L80.1 8.0L79.5 10.0L78.5 12.0L77.4 14.0L76.3 16.0L75.2 18.0L74.3 20.0L73.7 22.0L73.5 24.0L73.7 26.0L74.3 28.0L75.2 30.0L76.5 32.0L78.0 34.0L79.5 36.0L80.9 38.0L82.1 40.0L83.0 42.0L83.4 44.0L83.3 46.0L82.7 48.0L81.7 50.0L80.4 52.0L78.8 54.0L77.2 56.0L75.6 58.0L74.3 60.0L73.3 62.0L72.7 64.0L72.7 66.0L73.1 68.0L73.9 70.0L75.1 72.0L76.5 74.0L78.0 76.0L79.4 78.0L80.7 80.0L81.6 82.0L82.2 84.0L82.4 86.0L82.1 88.0L81.5 90.0L80.7 92.0L79.6 94.0L78.5 96.0L77.5 98.0L76.6 100.0L76.0 102.0L75.7 104.0L75.7 106.0L75.9 108.0L76.4 110.0L76.9 112.0L77.5 114.0L78.0 116.0"></path><path d="M80.0 50.0L82.0 51.1L84.0 51.5L86.0 51.3L88.0 50.5L90.0 49.3L92.0 48.2L94.0 47.6L96.0 47.5L98.0 48.1L100.0 49.1L102.0 50.1L104.0 50.5L106.0 50.0"></path></g></symbol>
  </defs>
 </svg>
 <div class="app" id="app">
@@ -303,6 +310,7 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
       <li><svg viewBox="0 0 40 40" fill="none" stroke="#5b8ec2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="10" r="3.4"/><circle cx="29" cy="10" r="3.4"/><path d="M5 34V22a6 6 0 0 1 12 0v12M23 34V22a6 6 0 0 1 12 0v12"/></svg><span>여러 명이면 <b>1.5m 간격으로 나란히</b>, 팔다리가 서로 겹치지 않게</span></li>
       <li class="phone-tip"><svg viewBox="0 0 40 40" fill="none" stroke="#5b8ec2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="12" width="28" height="17" rx="3"/><path d="M28 7a9 9 0 0 1 6 5M31 13l3-1 0-3"/></svg><span>폰은 <b>가로로 돌려서</b> 쓰면 내 모습이 크게 나와요</span></li>
      </ul>
+     <div class="course" id="coursePick" role="group" aria-label="오늘의 과정"></div>
      <div class="row" id="introBtns">
       <button class="btn" id="camBtn" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM16 10.5l5-3v9l-5-3z"/></svg>카메라로 시작</button>
       <button class="btn ghost" id="demoBtn" type="button">데모로 보기</button>
@@ -374,7 +382,7 @@ const add=(p,d,l)=>[p[0]+d[0]*l,p[1]+d[1]*l];
 const mid=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2];
 function fk(p){
   const td=dir(180-p.tilt),pr=[-td[1],td[0]],j={pel:[0,0]};
-  j.neck=add(j.pel,td,B.to);j.head=add(j.neck,dir(180-p.tilt*1.15),B.ne);
+  j.neck=add(j.pel,td,B.to);const hdd=dir(180-p.tilt*1.15-(p.nk||0)),hpr=[-hdd[1],hdd[0]];j.head=add(j.neck,hdd,B.ne*1.3);j.lEar=add(j.head,hpr,-.045);j.rEar=add(j.head,hpr,.045);
   j.lSh=add(j.neck,pr,-B.sw);j.rSh=add(j.neck,pr,B.sw);j.lHp=[-B.hw,0];j.rHp=[B.hw,0]; // 상체가 기울어도 골반은 수평
   for(const[s,g,q]of[['l',-1,p.L],['r',1,p.R]]){
     j[s+'El']=add(j[s+'Sh'],dir(g*q.ua),B.ua);j[s+'Wr']=add(j[s+'El'],dir(g*q.fa),B.fa);j[s+'Hd']=add(j[s+'Wr'],dir(g*q.fa),.045);
@@ -392,12 +400,14 @@ function feats(j){
   return{elL:ang(j.lSh,j.lEl,j.lWr),elR:ang(j.rSh,j.rEl,j.rWr),shL:ang(j.lHp,j.lSh,j.lEl),shR:ang(j.rHp,j.rSh,j.rEl),
     hpL:ang(j.lSh,j.lHp,j.lKn),hpR:ang(j.rSh,j.rHp,j.rKn),knL:ang(j.lHp,j.lKn,j.lAn),knR:ang(j.rHp,j.rKn,j.rAn),
     tilt:Math.atan2(sc[0]-hc[0],hc[1]-sc[1])*180/Math.PI,stance:Math.abs(j.rAn[0]-j.lAn[0])/sw,
-    pelvis:Math.atan2(j.rHp[1]-j.lHp[1],j.rHp[0]-j.lHp[0])*180/Math.PI,anL:shin(j.lKn,j.lAn,-1),anR:shin(j.rKn,j.rAn,1)};
+    pelvis:Math.atan2(j.rHp[1]-j.lHp[1],j.rHp[0]-j.lHp[0])*180/Math.PI,anL:shin(j.lKn,j.lAn,-1),anR:shin(j.rKn,j.rAn,1),
+    // 고개 기울기: 두 귀를 이은 선이 어깨선보다 얼마나 기울었나 (화면 오른쪽으로 기울면 +)
+    nk:j.lEar&&j.rEar?(x=>Math.atan2(Math.sin(x),Math.cos(x))*180/Math.PI)(Math.atan2(j.rEar[1]-j.lEar[1],j.rEar[0]-j.lEar[0])-Math.atan2(j.rSh[1]-j.lSh[1],j.rSh[0]-j.lSh[0])):0};
 }
 
 /* ── 자세 목록: p = 목표 각도, chk = 판정 항목 [허용오차, 가중치], err = 데모에서 일부러 틀리는 모습 ── */
-const NEUTRAL={tilt:0,L:{ua:7,fa:5,th:2,sh:1},R:{ua:7,fa:5,th:2,sh:1}};
-const POSES=[
+const NEUTRAL={tilt:0,nk:0,L:{ua:7,fa:5,th:2,sh:1},R:{ua:7,fa:5,th:2,sh:1}};
+const BASIC=[
  {name:'두 팔 올린 산 자세',en:'Urdhva Hastasana',sub:'하늘로 쭉 기지개',lv:1,asym:false,
   p:{tilt:0,L:{ua:174,fa:177,th:2,sh:1},R:{ua:174,fa:177,th:2,sh:1}},
   steps:['두 발을 모으고 바르게 섭니다','숨을 들이마시며 두 팔을 머리 위로 쭉 뻗어요','어깨는 귀에서 멀리, 손끝은 하늘로'],
@@ -429,23 +439,79 @@ const POSES=[
   chk:{knR:[30,1.6],hpR:[25,1.2],knL:[15,1],anL:[12,.6],shL:[25,.8],shR:[25,.8],elL:[30,.5],elR:[30,.5],tilt:[10,.6],pelvis:[8,.9]},
   err:{R:{th:18,sh:-40}}}
 ];
-const mirrorP=p=>({tilt:-p.tilt,L:{...p.R},R:{...p.L}});
+const GODDESS=BASIC[4],WARRIOR=BASIC[3];
+const NECK=[
+ {name:'목 옆으로 기울이기',en:'Neck side stretch',sub:'귀를 어깨 쪽으로',lv:1,asym:true,
+  p:{tilt:0,nk:32,L:{ua:9,fa:7,th:2,sh:1},R:{ua:9,fa:7,th:2,sh:1}},
+  steps:['바르게 서서 어깨 힘을 빼요','숨을 내쉬며 귀를 어깨 쪽으로 천천히 기울여요','어깨는 올라가지 않게, 반대쪽 목이 늘어나게'],
+  chk:{nk:[9,2.2],tilt:[7,1],shL:[22,.5],shR:[22,.5],elL:[25,.3],elR:[25,.3],knL:[15,.4],knR:[15,.4]},
+  err:{nk:10}},
+ {name:'팔 옆으로 쭉',en:'T-arm stretch',sub:'어깨 높이로 활짝',lv:1,asym:false,
+  p:{tilt:0,nk:0,L:{ua:90,fa:90,th:2,sh:1},R:{ua:90,fa:90,th:2,sh:1}},
+  steps:['발을 모으고 바르게 서요','두 팔을 옆으로 어깨 높이까지 쭉 펴요','손끝은 멀리, 어깨는 아래로'],
+  chk:{shL:[15,1.3],shR:[15,1.3],elL:[18,1],elR:[18,1],tilt:[7,.6],nk:[10,.4]},
+  err:{R:{ua:58,fa:52}}},
+ {name:'선인장 팔',en:'Cactus arms',sub:'가슴 활짝 열기',lv:1,asym:false,
+  p:{tilt:0,nk:0,L:{ua:90,fa:180,th:2,sh:1},R:{ua:90,fa:180,th:2,sh:1}},
+  steps:['두 팔을 옆으로 어깨 높이까지 올려요','팔꿈치를 90도로 굽혀 손끝이 하늘을 향하게','가슴을 열고 날개뼈를 살짝 모아요'],
+  chk:{shL:[18,1.1],shR:[18,1.1],elL:[20,1.2],elR:[20,1.2],tilt:[7,.6],nk:[10,.3]},
+  err:{L:{fa:125},R:{fa:130}}},
+ {name:'W자 팔',en:'W arms',sub:'날개뼈 모으기',lv:2,asym:false,
+  p:{tilt:0,nk:0,L:{ua:38,fa:160,th:2,sh:1},R:{ua:38,fa:160,th:2,sh:1}},
+  steps:['팔꿈치를 옆구리 가까이 내려요','손을 어깨 옆으로 올려 W 모양을 만들어요','날개뼈를 아래로 모으며 가슴을 펴요'],
+  chk:{shL:[15,1],shR:[15,1],elL:[20,1.2],elR:[20,1.2],tilt:[7,.6],nk:[10,.3]},
+  err:{L:{ua:30,fa:92},R:{ua:30,fa:96}}},
+ {name:'한 팔 뻗고 고개 반대로',en:'Side reach & neck',sub:'옆구리부터 목까지',lv:2,asym:true,
+  p:{tilt:0,nk:24,L:{ua:176,fa:178,th:2,sh:1},R:{ua:12,fa:10,th:2,sh:1}},
+  steps:['한쪽 팔을 머리 위로 쭉 뻗어요','고개는 반대쪽 어깨로 천천히 기울여요','올린 팔 옆구리부터 목까지 길게'],
+  chk:{shL:[22,1.2],elL:[25,.8],shR:[22,.6],nk:[10,1.6],tilt:[8,.8],knL:[15,.3],knR:[15,.3]},
+  err:{nk:4,L:{ua:132,fa:140}}}
+];
+const LEGS=[
+ {name:'손 허리 넓게 서기',en:'Wide stance',sub:'다리 넓게 버티기',lv:1,asym:false,
+  p:{tilt:0,nk:0,L:{ua:35,fa:-55,th:22,sh:22},R:{ua:35,fa:-55,th:22,sh:22}},
+  steps:['두 발을 어깨너비 두 배쯤 벌려요','손은 허리에, 무릎은 쭉 펴요','발바닥 전체로 바닥을 밀어요'],
+  chk:{stance:[.5,1.3],hpL:[12,.7],hpR:[12,.7],knL:[15,.8],knR:[15,.8],elL:[28,.5],elR:[28,.5],tilt:[7,.6],pelvis:[8,.5]},
+  err:{L:{th:6,sh:6},R:{th:6,sh:6}}},
+ {name:'옆으로 런지',en:'Side lunge',sub:'안쪽 허벅지 늘리기',lv:2,asym:true,
+  p:{tilt:0,nk:0,L:{ua:20,fa:15,th:42,sh:42},R:{ua:20,fa:15,th:70,sh:4}},
+  steps:['다리를 아주 넓게 벌려요','한쪽 무릎을 굽혀 엉덩이를 그쪽으로 내려요','반대쪽 다리는 쭉 펴서 안쪽 허벅지를 늘려요'],
+  chk:{knR:[18,1.6],knL:[15,1.1],anR:[12,.9],stance:[.8,1],tilt:[10,.6]},
+  err:{R:{th:52,sh:30}}},
+ {name:'다리 옆으로 들기',en:'Standing side leg raise',sub:'옆으로 다리 들기',lv:2,asym:true,
+  p:{tilt:0,nk:0,L:{ua:90,fa:90,th:-1,sh:-1},R:{ua:90,fa:90,th:38,sh:38}},
+  steps:['두 팔을 옆으로 펴서 균형을 잡아요','한쪽 다리를 옆으로 천천히 들어 올려요','들어 올린 다리 무릎은 쭉, 상체는 똑바로'],
+  chk:{hpR:[12,1.5],knR:[15,.9],knL:[15,.9],shL:[20,.5],shR:[20,.5],tilt:[9,.7]},
+  err:{R:{th:14,sh:14}}},
+ GODDESS,WARRIOR
+];
+const COURSES=[
+ {id:'basic',name:'기초 스트레칭',sub:'온몸 가볍게',poses:BASIC},
+ {id:'neck',name:'목·어깨 풀기',sub:'굳은 목과 어깨',poses:NECK},
+ {id:'legs',name:'하체 스트레칭',sub:'다리와 골반',poses:LEGS}
+];
+const POSES=[];
+const mirrorP=p=>({tilt:-p.tilt,nk:-(p.nk||0),L:{...p.R},R:{...p.L}});
 const mirrorK=k=>/[LR]$/.test(k)?k.slice(0,-1)+(k.endsWith('L')?'R':'L'):k;
-const merge=(p,e)=>({tilt:e.tilt??p.tilt,L:{...p.L,...(e.L||{})},R:{...p.R,...(e.R||{})}});
-const flat=p=>[p.tilt,p.L.ua,p.L.fa,p.L.th,p.L.sh,p.R.ua,p.R.fa,p.R.th,p.R.sh];
-const unflat=a=>({tilt:a[0],L:{ua:a[1],fa:a[2],th:a[3],sh:a[4]},R:{ua:a[5],fa:a[6],th:a[7],sh:a[8]}});
+const merge=(p,e)=>({tilt:e.tilt??p.tilt,nk:e.nk??p.nk??0,L:{...p.L,...(e.L||{})},R:{...p.R,...(e.R||{})}});
+const flat=p=>[p.tilt,p.L.ua,p.L.fa,p.L.th,p.L.sh,p.R.ua,p.R.fa,p.R.th,p.R.sh,p.nk||0];
+const unflat=a=>({tilt:a[0],nk:a[9],L:{ua:a[1],fa:a[2],th:a[3],sh:a[4]},R:{ua:a[5],fa:a[6],th:a[7],sh:a[8]}});
 const lerpP=(a,b,t)=>{const x=flat(a),y=flat(b);return unflat(x.map((v,i)=>v+(y[i]-v)*t))};
 const ease=t=>t<.5?2*t*t:1-((-2*t+2)**2)/2;
 // v[0] = 그림 그대로, v[1] = 좌우 반대 (판정 항목의 왼/오른쪽도 함께 바뀜)
-POSES.forEach(P=>{P.v=[{p:P.p,chk:P.chk},{p:mirrorP(P.p),chk:Object.fromEntries(Object.entries(P.chk).map(([k,v])=>[mirrorK(k),v]))}].map(o=>{const j=fk(o.p);return{...o,j,t:feats(j)}})});
+[...new Set(COURSES.flatMap(c=>c.poses))].forEach(P=>{P.v=[{p:P.p,chk:P.chk},{p:mirrorP(P.p),chk:Object.fromEntries(Object.entries(P.chk).map(([k,v])=>[mirrorK(k),v]))}].map(o=>{const j=fk(o.p);return{...o,j,t:feats(j)}})});
 
 /* ── 설정 ── */
-const LV={easy:{m:1.3,thr:.72},normal:{m:1,thr:.78},hard:{m:.8,thr:.84}};
-const CFG={lvl:'normal',hold:5,limit:60,model:'full',cam:'',bones:true,people:matchMedia('(max-width:600px),(max-height:520px)').matches?1:4,dev:'GPU'};
+// 난이도: 몇 점 이상이면 통과로 볼지 (m = 관절 각도 허용 오차 배율)
+const LV={easy:{m:1.15,thr:.7,pt:70},normal:{m:1,thr:.8,pt:80},hard:{m:1,thr:.9,pt:90}};
+const CFG={course:'basic',lvl:'normal',hold:5,limit:60,model:'full',cam:'',bones:true,people:matchMedia('(max-width:600px),(max-height:520px)').matches?1:4,dev:'GPU'};
 try{Object.assign(CFG,JSON.parse(localStorage.getItem('mirror-yoga')||'{}'))}catch(e){}
+const courseOf=id=>COURSES.find(c=>c.id===id)||COURSES[0];
+POSES.push(...courseOf(CFG.course).poses);
 const save=()=>{try{localStorage.setItem('mirror-yoga',JSON.stringify(CFG))}catch(e){}};
-const SETS=[['people','동시 인식 인원',[[1,'1명'],[2,'2명'],[3,'3명'],[4,'4명']],'여러 명이면 왼쪽부터 1·2·3·4번을 붙여 따로 채점해요. 사람이 너무 작게 찍히면 인식이 안 되니 키가 화면 높이의 절반 이상 되게 서 주세요. 3명 이상이면 인식 모델은 ‘빠름’을 권해요.'],
- ['lvl','난이도',[['easy','쉬움'],['normal','보통'],['hard','어려움']],'쉬움은 허용 오차를 넓혀요. 처음엔 쉬움으로 시작해 보세요.'],
+const SETS=[['course','과정',COURSES.map(c=>[c.id,c.name]),'과정을 바꾸면 첫 자세부터 다시 시작해요.'],
+ ['people','동시 인식 인원',[[1,'1명'],[2,'2명'],[3,'3명'],[4,'4명']],'여러 명이면 왼쪽부터 1·2·3·4번을 붙여 따로 채점해요. 사람이 너무 작게 찍히면 인식이 안 되니 키가 화면 높이의 절반 이상 되게 서 주세요. 3명 이상이면 인식 모델은 ‘빠름’을 권해요.'],
+ ['lvl','난이도 (통과 점수)',[['easy','쉬움 · 70점'],['normal','보통 · 80점'],['hard','어려움 · 90점']],'자세 점수가 이 점수를 넘으면 원형 카운트가 돌기 시작해요. 아이들과 함께라면 쉬움을 권해요.'],
  ['hold','자세 유지 시간',[[3,'3초'],[5,'5초'],[10,'10초']],''],
  ['limit','자세당 제한 시간',[[30,'30초'],[60,'60초'],[90,'90초'],[0,'없음']],'시간이 지나면 다음 자세로 넘어가요.'],
  ['model','인식 모델',[['lite','빠름'],['full','정확']],'화면이 끊기면 ‘빠름’으로 바꿔 보세요.'],
@@ -475,11 +541,11 @@ const segEl=SEG.map(([,,w])=>mk('line',{'stroke-width':w},body));
 const torso=mk('polygon',{'stroke-width':.075},body);
 const headEl=mk('circle',{r:B.hd,stroke:'none'},body);
 const markG=mk('g',{},fig);
-const MJ={shL:['lSh'],shR:['rSh'],elL:['lEl'],elR:['rEl'],hpL:['lHp'],hpR:['rHp'],knL:['lKn'],knR:['rKn'],tilt:['mid'],stance:['lAn','rAn'],pelvis:['lHp','rHp'],anL:['lAn'],anR:['rAn']};
+const MJ={shL:['lSh'],shR:['rSh'],elL:['lEl'],elR:['rEl'],hpL:['lHp'],hpR:['rHp'],knL:['lKn'],knR:['rKn'],tilt:['mid'],stance:['lAn','rAn'],pelvis:['lHp','rHp'],anL:['lAn'],anR:['rAn'],nk:['ears']};
 // 관절 하나에 판정 항목이 여러 개 걸리면(예: 골반 수평 + 엉덩이 각도) 가장 나쁜 결과의 색을 쓴다
 const jmap=chk=>{const m={};for(const k in chk)for(const j of MJ[k])(m[j]||(m[j]=[])).push(k);return Object.entries(m).map(([j,ks])=>({j,ks}))};
 const ALLJ=['lSh','rSh','lEl','rEl','lWr','rWr','lHp','rHp','lKn','rKn','lAn','rAn'];
-const jp=(j,k)=>k==='mid'?mid(mid(j.lSh,j.rSh),mid(j.lHp,j.rHp)):j[k];
+const jp=(j,k)=>k==='mid'?mid(mid(j.lSh,j.rSh),mid(j.lHp,j.rHp)):k==='ears'?(j.lEar&&j.rEar?mid(j.lEar,j.rEar):j.nose||j.head):j[k];
 const st=e=>e<=1?'ok':e<=2?'mid':'bad';
 const mcol=(m,per)=>{if(!per)return null;let e=-1;for(const k of m.ks)if(per[k])e=Math.max(e,per[k].e);return e<0?null:COL[st(e)]};
 const f3=v=>+v.toFixed(4);
@@ -537,6 +603,7 @@ function cue(k,d,f,t,short){
   if(b==='kn')return d>0?L(`${s}쪽 무릎을 더 굽히세요`,`${s}쪽 무릎 더 굽히기`):L(`${s}쪽 무릎을 조금 펴세요`,`${s}쪽 무릎 펴기`);
   if(b==='pe')return d>0?L('오른쪽 골반을 살짝 올려 수평으로 맞추세요','오른쪽 골반 올리기'):L('왼쪽 골반을 살짝 올려 수평으로 맞추세요','왼쪽 골반 올리기');
   if(b==='an')return d<0?L(`${s}쪽 무릎을 바깥으로, 발목 바로 위에 오게`,`${s}쪽 무릎 바깥으로`):L(`${s}쪽 무릎을 발목 바로 위로 모으세요`,`${s}쪽 무릎 발목 위로`);
+  if(b==='nk'){if(Math.abs(t.nk)<6)return L('고개를 똑바로 세우세요','고개 똑바로');return Math.sign(f.nk)!==Math.sign(t.nk)||Math.abs(f.nk)<Math.abs(t.nk)?L('고개를 어깨 쪽으로 더 기울이세요','고개 더 기울이기'):L('고개를 조금만 덜 기울이세요','고개 덜 기울이기')}
   if(b==='ti'){if(Math.abs(t.tilt)<5)return L('상체를 똑바로 세우세요','상체 세우기');return Math.sign(f.tilt)!==Math.sign(t.tilt)||Math.abs(f.tilt)<Math.abs(t.tilt)?L('상체를 옆으로 더 기울이세요','옆으로 더 기울이기'):L('조금만 덜 기울이세요','덜 기울이기')}
   return d<0?L('다리를 더 넓게 벌리세요','다리 더 넓게'):L('다리 간격을 조금 좁히세요','다리 좁히기');
 }
@@ -558,7 +625,7 @@ function sayUpd(o,msg,col,dt,instant){
 
 /* ── 카메라 + MediaPipe (최대 4명 추적) ── */
 const vid=$('vid');let lm=null,lmKey='',fsr=null,stream=null,lastVT=-1,lastTS=0,loading=false;
-const IDX={nose:0,lSh:11,rSh:12,lEl:13,rEl:14,lWr:15,rWr:16,lHp:23,rHp:24,lKn:25,rKn:26,lAn:27,rAn:28,lFt:31,rFt:32};
+const IDX={nose:0,lEar:7,rEar:8,lSh:11,rSh:12,lEl:13,rEl:14,lWr:15,rWr:16,lHp:23,rHp:24,lKn:25,rKn:26,lAn:27,rAn:28,lFt:31,rFt:32};
 const KEY=['lSh','rSh','lHp','rHp','lKn','rKn','lAn','rAn'];
 function fromMP(L,W,H){
   const j={};for(const k in IDX){const p=L[IDX[k]];j[k]=[(1-p.x)*W,p.y*H,p.visibility==null?1:p.visibility]}
@@ -651,7 +718,7 @@ function demoTracks(){
   const xs=n===1?[640]:n===2?[420,860]:[285,640,995],ds=n===1?500:n===2?420:340;S.demo={xs,ds};
   const w=performance.now()/1000;
   return xs.map((x,i)=>{
-    const flip=P.asym&&i===1,tgt=P.v[flip?1:0].p,e=P.err||{},err=merge(tgt,flip?{tilt:e.tilt==null?undefined:-e.tilt,L:e.R,R:e.L}:e);
+    const flip=P.asym&&i===1,tgt=P.v[flip?1:0].p,e=P.err||{},err=merge(tgt,flip?{tilt:e.tilt==null?undefined:-e.tilt,nk:e.nk==null?undefined:-e.nk,L:e.R,R:e.L}:e);
     const t=S.pt,c=3.6+[0,1.5,3][i];let p=NEUTRAL;
     if(ph==='active')p=t<1.3?lerpP(NEUTRAL,err,ease(t/1.3)):t<c?err:t<c+1.2?lerpP(err,tgt,ease((t-c)/1.2)):tgt;
     else if(ph==='done')p=tgt;
@@ -707,6 +774,7 @@ const arcA=(c,e,th,k)=>{const u=sub(e,c),lo=30*Math.PI/180,hi=75*Math.PI/180;ret
 const lineA=(p,v,len)=>({t:'line',p,v,len});
 function arrowsFor(k,J,ev,tj){
   const d=ev.per[k].d,sw=swd(J),floor=Math.max(J.lAn[1],J.rAn[1]);
+  if(k==='nk'&&J.lEar&&tj.lEar){const c=mid(J.lSh,J.rSh),e=mid(J.lEar,J.rEar),ct=mid(tj.lSh,tj.rSh),et=mid(tj.lEar,tj.rEar);return[arcA(c,e,wrap(sang([0,-1],sub(et,ct))-sang([0,-1],sub(e,c))),1.6)]}
   if(k==='tilt'){const c=mid(J.lHp,J.rHp),e=mid(J.lSh,J.rSh),ct=mid(tj.lHp,tj.rHp),et=mid(tj.lSh,tj.rSh);return[arcA(c,e,wrap(sang([0,-1],sub(et,ct))-sang([0,-1],sub(e,c))),1.8)]}
   if(RJ[k]){
     const[pv,rf,en]=RJ[k];
@@ -758,6 +826,24 @@ function badge(J,P,pl,col){
   cx.fillText(pl&&pl.done?'✓':String(pl?pl.id:''),x,y+r*.06);
   if(pl&&pl.ev&&S.phase==='active'&&!pl.done){const t=Math.round(pl.score*100)+'%';cx.font=`700 ${Math.round(r*.95)}px "Pretendard Variable", Pretendard, sans-serif`;cx.textAlign='left';cx.lineWidth=r*.32;cx.strokeStyle='rgba(4,24,27,.9)';cx.strokeText(t,x+r*1.7,y);cx.fillStyle='#fff';cx.fillText(t,x+r*1.7,y)}
 }
+// 자세를 유지하는 동안 남은 초를 큰 원으로 센다 (혼자면 화면 가운데, 여러 명이면 사람마다)
+function holdRing(pl,J,P,s){
+  if(!pl||S.phase!=='active'||pl.done||!(pl.hold>0)||pl.fail>=.4)return;
+  const w=cv.width,h=cv.height,g=group();let x,y,R;
+  if(!g){x=w/2;y=h*.46;R=Math.min(w,h)*.34}
+  else{const c=mid(mid(J.lSh,J.rSh),mid(J.lHp,J.rHp)),a=mid(J.lAn,J.rAn),q=P(c);x=q[0];y=q[1];R=Math.max(h*.12,Math.hypot(J.nose[0]-a[0],J.nose[1]-a[1])*s*.42)}
+  const fr=Math.min(1,pl.hold/CFG.hold),left=Math.max(1,Math.ceil(CFG.hold-pl.hold)),pop=RM?1:.86+.14*ease(Math.min(1,pl.hold/.3)),lw=R*.1;
+  cx.save();cx.translate(x,y);cx.scale(pop,pop);
+  cx.beginPath();cx.arc(0,0,R,0,7);cx.fillStyle='rgba(255,255,255,.16)';cx.fill();
+  cx.lineWidth=lw;cx.strokeStyle='rgba(255,255,255,.55)';cx.stroke();
+  cx.beginPath();cx.arc(0,0,R,-Math.PI/2,-Math.PI/2+Math.PI*2*fr);cx.strokeStyle=COL.ok;cx.lineCap='round';cx.lineWidth=lw;cx.stroke();
+  cx.textAlign='center';cx.textBaseline='middle';cx.lineJoin='round';
+  cx.font=`800 ${Math.round(R*.78)}px "Pretendard Variable", Pretendard, sans-serif`;
+  cx.lineWidth=R*.07;cx.strokeStyle='rgba(29,42,56,.55)';cx.strokeText(String(left),0,-R*.04);cx.fillStyle='#fff';cx.fillText(String(left),0,-R*.04);
+  cx.font=`700 ${Math.round(R*.15)}px "Pretendard Variable", Pretendard, sans-serif`;
+  cx.lineWidth=R*.04;cx.strokeText('그대로!',0,R*.5);cx.fillText('그대로!',0,R*.5);
+  cx.restore();
+}
 function drawMirror(){
   const w=cv.width,h=cv.height;if(w<2||h<2)return;
   const g=group(),cam=S.mode==='camera'&&vid.readyState>=2&&vid.videoWidth>0,W=cam?vid.videoWidth:1280,H=cam?vid.videoHeight:720;
@@ -774,7 +860,9 @@ function drawMirror(){
     if(S.mode==='demo'||CFG.bones||S.phase==='active')dotsOn(t.J,P,pl,S.mode==='demo'?'#ffffff':g?PCOL[ci]:'rgba(255,255,255,.9)');
     guideArrows(t.J,P,s,pl,now);
     if(g)badge(t.J,P,pl,PCOL[ci]);
+    if(g)holdRing(pl,t.J,P,s);
   }
+  if(!g)holdRing(S.pl[1],null,P,s);
 }
 
 /* ── 화면 갱신 ── */
@@ -787,7 +875,8 @@ function renderPose(){
   const P=POSES[S.idx];
   $('pName').textContent=P.name;$('pSub').textContent=P.en+' · '+P.sub;
   $('pSteps').innerHTML=P.steps.map(s=>`<li>${esc(s)}</li>`).join('');
-  $('chips').innerHTML=`<span class="chip">자세 ${S.idx+1} / ${POSES.length}</span><span class="chip">난이도 ${lvTxt(P.lv)}</span>${P.asym?'<span class="chip both">양쪽 모두 OK</span>':''}<span class="chip">${CFG.hold}초 유지</span>`;
+  $('chips').innerHTML=`<span class="chip">${courseOf(CFG.course).name} ${S.idx+1} / ${POSES.length}</span><span class="chip">난이도 ${lvTxt(P.lv)}</span>${P.asym?'<span class="chip both">양쪽 모두 OK</span>':''}<span class="chip">${LV[CFG.lvl].pt}점 넘으면 ${CFG.hold}초 유지</span>`;
+  renderCourses();
   $('now').textContent=`${S.idx+1} / ${POSES.length} · ${P.name}`;
   $('app').classList.toggle('grp',group());
   buildMarks();
@@ -922,6 +1011,14 @@ function closeModals(){
   $('setModal').hidden=$('sumModal').hidden=true;
   if(S.auto&&S.phase==='paused'){S.phase=S.back;setPlay()}S.auto=false;
 }
+function renderCourses(){
+  setH($('coursePick'),COURSES.map(c=>`<button class="crs" type="button" data-c="${c.id}" aria-pressed="${CFG.course===c.id}">${mini(c.poses[0].p)}<b>${c.name}</b><span>${c.sub} · ${c.poses.length}동작</span></button>`).join(''));
+}
+function setCourse(id){
+  CFG.course=courseOf(id).id;save();
+  POSES.splice(0,POSES.length,...courseOf(CFG.course).poses);
+  S.res=[];S.idx=0;go(0);S.res=[];renderSeq();
+}
 function renderSettings(){
   $('setRows').innerHTML=SETS.map(([k,label,opts,note])=>`<div class="set"><span>${label}</span><div class="seg" role="group" aria-label="${label}">${opts.map(([v,t])=>`<button type="button" data-k="${k}" data-v="${String(v)}" aria-pressed="${CFG[k]===v}">${t}</button>`).join('')}</div>${note?`<small>${note}</small>`:''}</div>`).join('');
 }
@@ -953,6 +1050,7 @@ $('sumAgain').onclick=again;
     if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5)slide(dx<0?1:-1);
   },{passive:true});
 }
+$('coursePick').onclick=e=>{const b=e.target.closest('.crs');if(b)setCourse(b.dataset.c)};
 $('rotSkip').onclick=()=>$('rot').classList.add('off');
 // 폰을 돌리면 카메라 방향이 바뀌므로 카메라를 다시 연다
 {let rt=0;matchMedia('(orientation: portrait)').addEventListener('change',()=>{clearTimeout(rt);if(S.mode==='camera')rt=setTimeout(()=>openCam().catch(e=>fail(e.name||'unknown')),450)})}
@@ -971,6 +1069,7 @@ $('setRows').onclick=e=>{
   const b=e.target.closest('button[data-k]');if(!b)return;
   const k=b.dataset.k,raw=b.dataset.v,v=raw==='true'?true:raw==='false'?false:isNaN(+raw)?raw:+raw,changed=CFG[k]!==v;
   CFG[k]=v;save();renderSettings();
+  if(k==='course'&&changed){setCourse(v);renderSettings()}
   if(k==='people'&&changed){S.tracks=[];S.pl={};for(const id in gEl){gEl[id].remove();delete gEl[id]}gOrder=''}
   renderPose();renderSeq();
   if(changed&&(k==='model'||k==='people'||k==='dev'))applyModel();
