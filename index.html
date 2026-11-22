@@ -125,6 +125,13 @@ button{font:inherit;color:inherit}
 .crs span{font-size:12px;color:var(--mute);word-break:keep-all}
 .crs em{font-style:normal;font-size:11px;font-weight:700;color:var(--acc);background:#eaf2f9;border-radius:99px;padding:1px 8px;margin-top:2px}
 .crs[aria-pressed=true]{background:#fff;border-color:var(--acc);box-shadow:0 0 0 1.5px var(--acc),0 6px 16px rgba(91,142,194,.18)}
+.chip.pick{cursor:pointer;background:#fff;border-color:var(--acc2);color:var(--ink);font:inherit;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:4px;min-height:30px}
+.chip.pick svg{width:12px;height:12px;color:var(--acc)}
+.cpop{position:absolute;left:16px;top:50px;z-index:5;background:#fff;border-radius:20px;box-shadow:0 14px 36px rgba(29,42,56,.2);padding:6px;display:grid;gap:2px;min-width:230px}
+.cpop button{display:flex;justify-content:space-between;align-items:center;gap:14px;min-height:44px;padding:0 14px;border:0;border-radius:14px;background:none;font:inherit;font-size:15px;color:var(--ink);text-align:left;cursor:pointer}
+.cpop button:hover{background:#f3f7fa}
+.cpop button[aria-checked=true]{background:#eaf2f9;color:var(--acc);font-weight:700}
+.cpop small{font-size:12px;color:var(--mute);font-weight:500}
 .tips{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .tips li{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:center;background:rgba(255,255,255,.75);border:1px solid #fff;border-radius:18px;padding:10px 14px;font-size:clamp(15px,1vw,17px)}
 .tips svg{width:40px;height:40px}
@@ -182,6 +189,7 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
  .guide{grid-template-rows:auto auto}
  .figbox{display:flex;flex-direction:column}
  .chips{position:static;padding:12px 14px 0}
+ .cpop{top:56px;left:14px}
  .breath{position:static;align-self:flex-start;margin:8px 14px 0}
  .figbox>svg{position:static;width:100%;height:min(58vw,380px)}
  .view{aspect-ratio:4/3;max-height:78vh}
@@ -279,6 +287,7 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
   <section class="panel guide" aria-label="예시 동작">
    <div class="figbox">
     <div class="chips" id="chips"></div>
+    <div class="cpop" id="cpop" role="menu" aria-label="과정 바꾸기" hidden></div>
     <div class="breath" id="breath" hidden><i></i><span id="breathTxt">들이마시고</span></div>
     <svg id="fig" viewBox="-0.7 -1.24 1.4 1.33" preserveAspectRatio="xMidYMid meet" role="img" aria-label="예시 동작 그림"></svg>
    </div>
@@ -1138,7 +1147,7 @@ function renderPose(){
   const P=POSES[S.idx];
   $('pName').textContent=P.name;$('pSub').textContent=P.en+' · '+P.sub;
   $('pSteps').innerHTML=P.steps.map(s=>`<li>${esc(s)}</li>`).join('');
-  $('chips').innerHTML=`<span class="chip">${courseOf(CFG.course).name} ${S.idx+1} / ${POSES.length}</span><span class="chip">난이도 ${lvTxt(P.lv)}</span>${P.half?`<span class="chip both">${P.half}</span>`:''}<span class="chip">${LV[CFG.lvl].pt}점 넘으면 ${HOLD()}초 유지</span>`;
+  $('chips').innerHTML=`<button class="chip pick" type="button" aria-haspopup="true" aria-expanded="false" title="다른 과정 고르기">${courseOf(CFG.course).name} ${S.idx+1} / ${POSES.length}<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="chip">난이도 ${lvTxt(P.lv)}</span>${P.half?`<span class="chip both">${P.half}</span>`:''}<span class="chip">${LV[CFG.lvl].pt}점 넘으면 ${HOLD()}초 유지</span>`;
   renderCourses();
   $('now').textContent=`${S.idx+1} / ${POSES.length} · ${P.name}`;
   $('app').classList.toggle('grp',group());
@@ -1322,6 +1331,18 @@ $('sumAgain').onclick=again;
 addEventListener('pointerdown',audioUnlock,{passive:true});addEventListener('keydown',audioUnlock);
 $('sndBtn').onclick=()=>{CFG.sound=CFG.sound==='off'?'all':'off';save();setSndIcon();if(CFG.sound==='off')hush();else{audioUnlock();beep(880,.12)}};
 setSndIcon();
+// 과정 칩 → 과정 목록 열기
+const cpop=$('cpop');
+function closeCpop(){cpop.hidden=true;const c=document.querySelector('.chip.pick');if(c)c.setAttribute('aria-expanded','false')}
+$('chips').onclick=e=>{
+  const c=e.target.closest('.chip.pick');if(!c)return;
+  if(!cpop.hidden){closeCpop();return}
+  cpop.innerHTML=COURSES.map(x=>`<button type="button" role="menuitemradio" aria-checked="${x.id===CFG.course}" data-c="${x.id}">${x.name}<small>${x.poses.length}단계</small></button>`).join('');
+  cpop.hidden=false;c.setAttribute('aria-expanded','true');cpop.querySelector('button').focus();
+};
+cpop.onclick=e=>{const b=e.target.closest('button[data-c]');if(!b)return;closeCpop();if(b.dataset.c!==CFG.course)setCourse(b.dataset.c)};
+document.addEventListener('click',e=>{if(!cpop.hidden&&!e.target.closest('#cpop,.chip.pick'))closeCpop()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!cpop.hidden)closeCpop()});
 $('coursePick').onclick=e=>{const b=e.target.closest('.crs');if(b)setCourse(b.dataset.c)};
 $('rotSkip').onclick=()=>$('rot').classList.add('off');
 // 폰을 돌리면 카메라 방향이 바뀌므로 카메라를 다시 연다
