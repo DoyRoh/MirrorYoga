@@ -225,7 +225,12 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
 @keyframes turn{0%,20%{transform:rotate(0)}55%,100%{transform:rotate(-90deg)}}
 .phone-tip{display:none!important}
 @media (orientation:portrait) and (max-width:600px){.live .rot:not(.off){display:grid}.phone-tip{display:grid!important}}
-@media (prefers-reduced-motion:reduce){.rot .ph,.breath i,.tag i.live,.busy i,#fig circle.pulse{animation:none}.ring circle{transition:none}}
+.guide{touch-action:pan-y}
+.guide.sl-n .figbox,.guide.sl-n .info{animation:slN .32s ease-out}
+.guide.sl-p .figbox,.guide.sl-p .info{animation:slP .32s ease-out}
+@keyframes slN{from{transform:translateX(48px);opacity:0}}
+@keyframes slP{from{transform:translateX(-48px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.guide .figbox,.guide .info{animation:none!important}.rot .ph,.breath i,.tag i.live,.busy i,#fig circle.pulse{animation:none}.ring circle{transition:none}}
 </style>
 </head>
 <body>
@@ -352,8 +357,10 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
 {
 const $=id=>document.getElementById(id);
 const NS='http://www.w3.org/2000/svg';
-const CDN='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.2.2';
-const MODEL={lite:'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task',
+// iOS 앱(Capacitor) 안에서는 앱에 넣어 둔 인식 모델을 쓴다 → 인터넷 없이도 동작
+const APP=location.protocol==='capacitor:';
+const CDN=APP?'./mp':'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.2.2';
+const MODEL=APP?{lite:'./mp/pose_landmarker_lite.task',full:'./mp/pose_landmarker_full.task'}:{lite:'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task',
              full:'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task'};
 const COL={ok:'#3db88a',mid:'#e9a93a',bad:'#e8605c',idle:'#5b8ec2'};
 const PCOL=['#5b8ec2','#e1809b','#8c7fd0','#e09a4c'],PTINT=['#8fb3d6','#eaa9bb','#b6acE6','#ecbd8c'];
@@ -932,6 +939,20 @@ $('setBtn').onclick=()=>{renderSettings();openModal('setModal')};
 $('setClose').onclick=closeModals;
 $('sumClose').onclick=closeModals;
 $('sumAgain').onclick=again;
+// 왼쪽 자세 판을 손가락으로 밀어서 이전·다음 자세로
+{
+  const g=document.querySelector('.guide');let x0=null,y0=0;
+  const slide=d=>{
+    const i=S.idx+d;if(i<0)return;
+    if(i>=POSES.length){if(S.mode)summary();return}
+    go(i);g.classList.remove('sl-n','sl-p');void g.offsetWidth;g.classList.add(d>0?'sl-n':'sl-p');
+  };
+  g.addEventListener('touchstart',e=>{const t=e.touches[0];x0=t.clientX;y0=t.clientY},{passive:true});
+  g.addEventListener('touchend',e=>{
+    if(x0===null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5)slide(dx<0?1:-1);
+  },{passive:true});
+}
 $('rotSkip').onclick=()=>$('rot').classList.add('off');
 // 폰을 돌리면 카메라 방향이 바뀌므로 카메라를 다시 연다
 {let rt=0;matchMedia('(orientation: portrait)').addEventListener('change',()=>{clearTimeout(rt);if(S.mode==='camera')rt=setTimeout(()=>openCam().catch(e=>fail(e.name||'unknown')),450)})}

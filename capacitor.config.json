@@ -1,0 +1,9 @@
+{
+  "appId": "com.doyroh.mirroryoga",
+  "appName": "MirrorYoga",
+  "webDir": "www",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#eef3f7"
+  }
+}
