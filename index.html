@@ -714,7 +714,7 @@ const COURSES=[
  {id:'neck',name:'목·어깨·허리 풀기',sub:'굳은 목, 어깨, 허리',poses:NECK},
  {id:'legs',name:'하체 스트레칭',sub:'다리와 골반',poses:LEGS},
  {id:'challenge',name:'도전! 전신 균형',sub:'조금 어려운 동작',poses:CHALLENGE},
- {id:'lying',name:'누워서 하기',sub:'바닥에서 천천히 · 태양경배',solo:true,poses:LYING}
+ {id:'lying',name:'누워서 하기',sub:'바닥에서 천천히 · 태양경배',sideBlock:true,solo:true,poses:LYING}
 ];
 const POSES=[];
 const mirrorP=p=>({pf:p.pf,tilt:-p.tilt,nk:-(p.nk||0),rot:-(p.rot||0),L:{...p.R},R:{...p.L}});
@@ -729,7 +729,11 @@ const ease=t=>t<.5?2*t*t:1-((-2*t+2)**2)/2;
 // 한쪽으로 하는 동작은 '한쪽 → 반대쪽' 두 단계로 펼친다 (반대쪽은 좌우를 뒤집은 목표)
 const flipErr=e=>e&&{...e,tilt:e.tilt==null?undefined:-e.tilt,nk:e.nk==null?undefined:-e.nk,rot:e.rot==null?undefined:-e.rot,L:e.R,R:e.L};
 const halfOf=(P,k)=>({...P,asym:false,half:k?'반대쪽':'한쪽 먼저',name:k?P.name+' · 반대쪽':P.name,p:P.v[k].p,v:[P.v[k]],err:k?flipErr(P.err):P.err});
-COURSES.forEach(c=>{c.poses=c.poses.flatMap(P=>P.asym?[halfOf(P,0),halfOf(P,1)]:[P])});
+// 보통은 동작마다 '한쪽 → 반대쪽'. 누워서 하기(sideBlock)는 한쪽으로 누운 채 다 하고, 돌아누워서 반대쪽을 이어서
+COURSES.forEach(c=>{
+  if(c.sideBlock){const A=c.poses.filter(P=>P.asym),R=c.poses.filter(P=>!P.asym),B=A.map(P=>halfOf(P,1));if(B[0])B[0]={...B[0],turn:true,half:'돌아누워 반대쪽'};c.poses=[...A.map(P=>halfOf(P,0)),...B,...R]}
+  else c.poses=c.poses.flatMap(P=>P.asym?[halfOf(P,0),halfOf(P,1)]:[P]);
+});
 
 /* ── 설정 ── */
 // 난이도: 몇 점 이상이면 통과로 볼지 (m = 관절 각도 허용 오차 배율)
@@ -1241,7 +1245,7 @@ function go(i){
   S.idx=Math.max(0,Math.min(POSES.length-1,i));
   Object.assign(S,{pt:0,figT:0,loopT:0,figVi:0,pl:{},ss:{say:'',cand:'',candT:0,sayCol:COL.idle}});
   for(const id in gEl){gEl[id].remove();delete gEl[id]}gOrder='';
-  if(S.mode){S.phase='ready';speak(POSES[S.idx].name,true)}
+  if(S.mode){S.phase='ready';const NP=POSES[S.idx];speak((NP.turn?'이제 반대쪽으로 돌아누워요. ':'')+NP.name,true)}
   renderPose();renderSeq();setPlay();
 }
 function finish(){
