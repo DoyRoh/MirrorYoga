@@ -259,6 +259,7 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
   <div class="clock" id="clock"></div>
   <div class="tools">
    <button class="mode" id="modeBtn" type="button" title="시작 방법 다시 고르기"><i></i><span>대기 중</span></button>
+   <button class="ibtn" id="sndBtn" type="button" aria-label="소리 끄기" title="소리 켜기·끄기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><g id="sndOn"><path d="M15.5 9a4.2 4.2 0 0 1 0 6"/><path d="M18.3 6.5a8 8 0 0 1 0 11"/></g><g id="sndOff" hidden><path d="M16 9.5l5 5M21 9.5l-5 5"/></g></svg></button>
    <button class="ibtn" id="setBtn" type="button" aria-label="설정" title="설정"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle cx="16" cy="7" r="2.6"/><circle cx="10" cy="17" r="2.6"/></svg></button>
    <button class="ibtn" id="fsBtn" type="button" aria-label="전체 화면" title="전체 화면 (F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
   </div>
@@ -308,7 +309,8 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
       <li><svg viewBox="0 0 40 40" fill="none" stroke="#5b8ec2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="25" cy="9" r="3.4"/><path d="M25 13v12m0-8l-5 4m5-4l5 4m-5 4l-4 8m4-8l4 8M4 34h12M4 34l3-3m-3 3l3 3M16 34l-3-3m3 3l-3 3"/></svg><span>카메라에서 <b>2.5~4m</b>, 머리부터 발끝까지 보이되 키가 <b>화면 높이의 절반 이상</b> 되게</span></li>
       <li><svg viewBox="0 0 40 40" fill="none" stroke="#5b8ec2" stroke-width="2.4" stroke-linecap="round"><circle cx="20" cy="20" r="6.5"/><path d="M20 4v5M20 31v5M4 20h5M31 20h5M8.7 8.7l3.5 3.5M27.8 27.8l3.5 3.5M8.7 31.3l3.5-3.5M27.8 12.2l3.5-3.5"/></svg><span>밝은 곳에서, 창문이나 조명을 <b>등지지 않게</b></span></li>
       <li><svg viewBox="0 0 40 40" fill="none" stroke="#5b8ec2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="10" r="3.4"/><circle cx="29" cy="10" r="3.4"/><path d="M5 34V22a6 6 0 0 1 12 0v12M23 34V22a6 6 0 0 1 12 0v12"/></svg><span>여러 명이면 <b>1.5m 간격으로 나란히</b>, 팔다리가 서로 겹치지 않게</span></li>
-      <li class="phone-tip"><svg viewBox="0 0 40 40" fill="none" stroke="#5b8ec2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="12" width="28" height="17" rx="3"/><path d="M28 7a9 9 0 0 1 6 5M31 13l3-1 0-3"/></svg><span>폰은 <b>가로로 돌려서</b> 쓰면 내 모습이 크게 나와요</span></li>
+      <li><svg viewBox="0 0 40 40" fill="none" stroke="#5b8ec2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="8" r="3.4"/><path d="M13 12v12m0-8l-5 3m5-3l5 3m-5 5l-4 8m4-8l4 8"/><circle cx="29" cy="18" r="2.8"/><path d="M29 21v8m0-5l-4 2m4-2l4 2m-4 3l-3 6m3-6l3 6"/></svg><span>아이는 어른보다 <b>한 걸음 앞에</b> 서면 더 잘 알아봐요</span></li>
+     <li class="phone-tip"><svg viewBox="0 0 40 40" fill="none" stroke="#5b8ec2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="12" width="28" height="17" rx="3"/><path d="M28 7a9 9 0 0 1 6 5M31 13l3-1 0-3"/></svg><span>폰은 <b>가로로 돌려서</b> 쓰면 내 모습이 크게 나와요</span></li>
      </ul>
      <div class="course" id="coursePick" role="group" aria-label="오늘의 과정"></div>
      <div class="row" id="introBtns">
@@ -504,7 +506,7 @@ const ease=t=>t<.5?2*t*t:1-((-2*t+2)**2)/2;
 /* ── 설정 ── */
 // 난이도: 몇 점 이상이면 통과로 볼지 (m = 관절 각도 허용 오차 배율)
 const LV={easy:{m:1.15,thr:.7,pt:70},normal:{m:1,thr:.8,pt:80},hard:{m:1,thr:.9,pt:90}};
-const CFG={course:'basic',lvl:'normal',hold:5,limit:60,model:'full',cam:'',bones:true,people:matchMedia('(max-width:600px),(max-height:520px)').matches?1:4,dev:'GPU'};
+const CFG={sound:'all',course:'basic',lvl:'normal',hold:5,limit:60,model:'full',cam:'',bones:true,people:matchMedia('(max-width:600px),(max-height:520px)').matches?1:4,dev:'GPU'};
 try{Object.assign(CFG,JSON.parse(localStorage.getItem('mirror-yoga')||'{}'))}catch(e){}
 const courseOf=id=>COURSES.find(c=>c.id===id)||COURSES[0];
 POSES.push(...courseOf(CFG.course).poses);
@@ -516,6 +518,7 @@ const SETS=[['course','과정',COURSES.map(c=>[c.id,c.name]),'과정을 바꾸�
  ['limit','자세당 제한 시간',[[30,'30초'],[60,'60초'],[90,'90초'],[0,'없음']],'시간이 지나면 다음 자세로 넘어가요.'],
  ['model','인식 모델',[['lite','빠름'],['full','정확']],'화면이 끊기면 ‘빠름’으로 바꿔 보세요.'],
  ['dev','처리 방식',[['GPU','GPU'],['CPU','CPU']],'아이패드 등에서 뼈대가 엉뚱하게 그려지면 CPU로 바꿔 보세요.'],
+ ['sound','소리',[['all','음성 안내 + 효과음'],['fx','효과음만'],['off','끄기']],'자세 이름, 고칠 곳, 3·2·1 카운트를 소리로 알려 줘요. 아이폰은 무음 모드를 꺼야 들려요.'],
  ['bones','뼈대 선',[[true,'보이기'],[false,'숨기기']],'']];
 const group=()=>CFG.people>1;
 
@@ -611,7 +614,7 @@ function worst(ev){let k=null,v=1;for(const x in ev.per){const p=ev.per[x],w=p.e
 function plMsg(pl,short){
   if(!pl.tracked)return[short?'자리 비움':'카메라 앞에 서 주세요',COL.idle];
   if(!pl.seen)return[pl.say,pl.sayCol];
-  if(pl.why)return[pl.why==='far'?L2(short,'전신이 보이도록 뒤로 물러나 주세요','전신이 보이게'):L2(short,'화면 가운데로 와 주세요','가운데로'),COL.mid];
+  if(pl.why)return[pl.why==='far'?L2(short,'전신이 보이도록 뒤로 물러나 주세요','전신이 보이게'):pl.why==='small'?L2(short,'한 걸음 앞으로 와 주세요','앞으로'):L2(short,'화면 가운데로 와 주세요','가운데로'),COL.mid];
   const ev=pl.ev;if(!ev)return[pl.say,pl.sayCol];
   const k=worst(ev);if(k)return[cue(k,ev.per[k].d,ev.f,ev.t,short),COL[st(ev.per[k].e)]];
   return[pl.hold>.3?L2(short,'좋아요! 그대로 유지하세요','좋아요! 유지'):'좋아요!',COL.ok];
@@ -642,7 +645,7 @@ const hipC=j=>mid(j.lHp,j.rHp),swd=j=>Math.hypot(j.rSh[0]-j.lSh[0],j.rSh[1]-j.lS
 // 프레임마다 가까운 사람끼리 이어 붙여 번호를 유지한다. 새로 나타난 사람은 왼쪽부터 빈 번호를 받는다
 function track(dets,dt){
   const T=S.tracks,pairs=[];
-  T.forEach((t,a)=>dets.forEach((d,b)=>{const p=hipC(t.J),q=hipC(d);pairs.push([Math.hypot(p[0]-q[0],p[1]-q[1])/Math.max(swd(t.J),swd(d)),a,b])}));
+  T.forEach((t,a)=>dets.forEach((d,b)=>{const p=hipC(t.J),q=hipC(d);pairs.push([Math.hypot(p[0]-q[0],p[1]-q[1])/Math.max(swd(t.J),swd(d))+1.5*Math.abs(Math.log(swd(t.J)/swd(d))),a,b])}));
   pairs.sort((x,y)=>x[0]-y[0]);const ta=new Set(),db=new Set();
   for(const[dd,a,b]of pairs){
     if(dd>2.5||ta.has(a)||db.has(b))continue;ta.add(a);db.add(b);
@@ -659,7 +662,10 @@ function track(dets,dt){
 function vis(j){
   const c=S.crop;if(!c)return'';let far=false,side=false;
   for(const k of KEY){const p=j[k];if(p[2]<.5||p[1]<c.y0||p[1]>c.y1)far=true;else if(p[0]<c.x0||p[0]>c.x1)side=true}
-  return far?'far':side?'side':'';
+  if(far)return'far';if(side)return'side';
+  // 화면 높이의 28%보다 작게 찍히면(멀리 선 아이 등) 관절 위치가 부정확하다
+  const top=Math.min(j.nose[1],j.lSh[1],j.rSh[1]),bot=Math.max(j.lAn[1],j.rAn[1]);
+  return bot-top<(c.y1-c.y0)*.28?'small':'';
 }
 function loadScript(src){return new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.crossOrigin='anonymous';s.onload=ok;s.onerror=()=>no(new Error('script'));document.head.appendChild(s)})}
 async function loadModel(){
@@ -828,7 +834,7 @@ function badge(J,P,pl,col){
 }
 // 자세를 유지하는 동안 남은 초를 큰 원으로 센다 (혼자면 화면 가운데, 여러 명이면 사람마다)
 function holdRing(pl,J,P,s){
-  if(!pl||S.phase!=='active'||pl.done||!(pl.hold>0)||pl.fail>=.4)return;
+  if(!pl||!pl.seen||S.phase!=='active'||pl.done||!(pl.hold>0)||pl.fail>=.4)return;
   const w=cv.width,h=cv.height,g=group();let x,y,R;
   if(!g){x=w/2;y=h*.46;R=Math.min(w,h)*.34}
   else{const c=mid(mid(J.lSh,J.rSh),mid(J.lHp,J.rHp)),a=mid(J.lAn,J.rAn),q=P(c);x=q[0];y=q[1];R=Math.max(h*.12,Math.hypot(J.nose[0]-a[0],J.nose[1]-a[1])*s*.42)}
@@ -864,6 +870,35 @@ function drawMirror(){
   }
   if(!g)holdRing(S.pl[1],null,P,s);
 }
+
+
+/* ── 소리: 음성 안내(speechSynthesis) + 효과음(WebAudio). 아이폰은 첫 터치 때 열어 둬야 소리가 난다 ── */
+const SND={ctx:null,unlocked:false,cue:'',cueT:0,beepT:0,voice:null};
+function audioUnlock(){
+  try{
+    if(!SND.ctx){const A=window.AudioContext||window.webkitAudioContext;if(A)SND.ctx=new A()}
+    if(SND.ctx&&SND.ctx.state==='suspended')SND.ctx.resume();
+    if(window.speechSynthesis&&!SND.unlocked){const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u);SND.unlocked=true}
+  }catch(e){}
+}
+function pickVoice(){try{const v=speechSynthesis.getVoices();SND.voice=v.find(x=>/^ko/i.test(x.lang))||null}catch(e){}}
+if(window.speechSynthesis){pickVoice();try{speechSynthesis.addEventListener('voiceschanged',pickVoice)}catch(e){}}
+function beep(f,d,v,delay){
+  if(CFG.sound==='off'||!SND.ctx)return;
+  try{const c=SND.ctx,t=c.currentTime+(delay||0),o=c.createOscillator(),g=c.createGain();
+    o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v||.16,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+    o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+d+.03)}catch(e){}
+}
+const chime=()=>{beep(784,.2,.15);beep(1047,.26,.15,.12);beep(1319,.45,.15,.24)};
+function speak(t,urgent){
+  if(CFG.sound!=='all'||!S.mode||!window.speechSynthesis||!t)return;
+  try{
+    if(urgent)speechSynthesis.cancel();else if(speechSynthesis.speaking||speechSynthesis.pending)return;
+    const u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';if(SND.voice)u.voice=SND.voice;u.rate=1.05;speechSynthesis.speak(u);
+  }catch(e){}
+}
+const hush=()=>{try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}};
+function setSndIcon(){const off=CFG.sound==='off';$('sndOn').hidden=off;$('sndOff').hidden=!off;$('sndBtn').setAttribute('aria-label',off?'소리 켜기':'소리 끄기')}
 
 /* ── 화면 갱신 ── */
 const setT=(el,v)=>{if(el._v!==v){el._v=v;el.textContent=v}};
@@ -927,6 +962,8 @@ function hud(dt){
     else if(ph==='done')m=r1&&r1.ok?'잘했어요! 다음 자세로 넘어가요':'괜찮아요, 다음 자세로 넘어가요';
     else if(ph==='finished')m='모든 자세를 마쳤어요';
     sayUpd(S.ss,m,c,dt,ph!=='active');
+    const tnow=performance.now();
+    if(ph==='active'&&S.ss.say&&S.ss.sayCol!==COL.ok&&S.ss.sayCol!==COL.idle&&tnow-SND.cueT>3200&&(S.ss.say!==SND.cue||tnow-SND.cueT>8000)){speak(S.ss.say);SND.cue=S.ss.say;SND.cueT=tnow}
     setT($('say').lastElementChild,S.ss.say||'자세를 따라 해 보세요');$('say').firstElementChild.style.background=S.ss.sayCol||COL.idle;
     const hd=p1?p1.hold:0;$('holdBar').style.width=Math.min(100,hd/CFG.hold*100).toFixed(1)+'%';
     setT($('holdTxt'),`${Math.min(hd,CFG.hold).toFixed(1)} / ${CFG.hold}초`);
@@ -967,16 +1004,17 @@ function go(i){
   S.idx=Math.max(0,Math.min(POSES.length-1,i));
   Object.assign(S,{pt:0,figT:0,loopT:0,figVi:0,pl:{},ss:{say:'',cand:'',candT:0,sayCol:COL.idle}});
   for(const id in gEl){gEl[id].remove();delete gEl[id]}gOrder='';
-  if(S.mode)S.phase='ready';
+  if(S.mode){S.phase='ready';speak(POSES[S.idx].name,true)}
   renderPose();renderSeq();setPlay();
 }
 function finish(){
+  if(!Object.values(S.pl).some(p=>p.tracked||p.done)||Object.values(S.pl).some(p=>p.tracked&&!p.done))speak('시간이 다 됐어요. 다음 자세로 넘어가요',true);
   for(const id in S.pl){const pl=S.pl[id];if(!resOf(S.idx,id))rec(id,{ok:false,score:pl.best,stars:0})}
   if(!S.res[S.idx])S.res[S.idx]={skip:true};
   S.phase='done';S.pt=0;renderSeq();
 }
 function summary(){
-  S.phase='finished';setPlay();renderSeq();
+  S.phase='finished';setPlay();renderSeq();chime();speak('모든 자세를 마쳤어요. 수고하셨어요!',true);
   if(!group()){
     const rs=POSES.map((P,i)=>resOf(i,1)),done=rs.filter(r=>r&&r.ok),avg=done.length?done.reduce((a,r)=>a+r.score,0)/done.length:0,stars=rs.reduce((a,r)=>a+(r?r.stars:0),0);
     $('sumHead').textContent=`성공 ${done.length} / ${POSES.length} · 평균 정확도 ${Math.round(avg*100)}% · 별 ${stars} / ${POSES.length*3}`;
@@ -991,15 +1029,15 @@ function summary(){
   openModal('sumModal');
 }
 function begin(mode){
-  S.mode=mode;$('app').classList.add('live');S.res=[];S.tracks=[];$('intro').hidden=true;$('hudBot').hidden=false;S.phase='ready';go(S.idx);
+  $('err').hidden=true;S.mode=mode;$('app').classList.add('live');S.res=[];S.tracks=[];$('intro').hidden=true;$('hudBot').hidden=false;S.phase='ready';go(S.idx);
 }
 function home(){
-  stopCam();$('app').classList.remove('live');S.mode=null;S.phase='intro';S.tracks=[];S.pl={};S.demo=null;$('intro').hidden=false;$('hudBot').hidden=true;$('err').hidden=true;busy(false);go(S.idx);
+  hush();stopCam();$('app').classList.remove('live');S.mode=null;S.phase='intro';S.tracks=[];S.pl={};S.demo=null;$('intro').hidden=false;$('hudBot').hidden=true;$('err').hidden=true;busy(false);go(S.idx);
 }
 function togglePause(){
   if(!S.mode){$('camBtn').focus();return}
   if(S.phase==='finished'){again();return}
-  if(S.phase==='paused')S.phase=S.back;else{S.back=S.phase;S.phase='paused'}
+  if(S.phase==='paused')S.phase=S.back;else{S.back=S.phase;S.phase='paused';hush()}
   setPlay();
 }
 function again(){closeModals();if(!S.mode)return;S.res=[];S.phase='ready';go(0)}
@@ -1050,6 +1088,9 @@ $('sumAgain').onclick=again;
     if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5)slide(dx<0?1:-1);
   },{passive:true});
 }
+addEventListener('pointerdown',audioUnlock,{passive:true});addEventListener('keydown',audioUnlock);
+$('sndBtn').onclick=()=>{CFG.sound=CFG.sound==='off'?'all':'off';save();setSndIcon();if(CFG.sound==='off')hush();else{audioUnlock();beep(880,.12)}};
+setSndIcon();
 $('coursePick').onclick=e=>{const b=e.target.closest('.crs');if(b)setCourse(b.dataset.c)};
 $('rotSkip').onclick=()=>$('rot').classList.add('off');
 // 폰을 돌리면 카메라 방향이 바뀌므로 카메라를 다시 연다
@@ -1070,6 +1111,7 @@ $('setRows').onclick=e=>{
   const k=b.dataset.k,raw=b.dataset.v,v=raw==='true'?true:raw==='false'?false:isNaN(+raw)?raw:+raw,changed=CFG[k]!==v;
   CFG[k]=v;save();renderSettings();
   if(k==='course'&&changed){setCourse(v);renderSettings()}
+  if(k==='sound'){setSndIcon();if(v==='off')hush()}
   if(k==='people'&&changed){S.tracks=[];S.pl={};for(const id in gEl){gEl[id].remove();delete gEl[id]}gOrder=''}
   renderPose();renderSeq();
   if(changed&&(k==='model'||k==='people'||k==='dev'))applyModel();
@@ -1104,14 +1146,20 @@ function loop(now){
       pl.ev=act&&pl.seen&&!pl.why&&!pl.done?evaluate(t.J,pl):pl.seen?null:pl.ev;
     }
     for(const id in S.pl)if(!S.pl[id].tracked)S.pl[id].ev=null;
-    if(S.phase==='ready'){S.pt+=dt;if(S.pt>=3){S.phase='active';S.pt=0;S.figT=S.loopT>=2.4&&S.loopT<6.4?1.4:0}}
+    if(S.phase==='ready'){S.pt+=dt;if(S.pt>=3){S.phase='active';S.pt=0;beep(660,.18);speak('시작',true);S.figT=S.loopT>=2.4&&S.loopT<6.4?1.4:0}}
     else if(act){
       S.pt+=dt;
       for(const id in S.pl){
         const pl=S.pl[id],ev=pl.ev;if(!ev||!pl.seen||pl.done)continue;
         pl.best=Math.max(pl.best,pl.score);
         if(ev.pass){pl.hold+=dt;pl.fail=0;pl.sum+=ev.s*dt;pl.n+=dt}else{pl.fail+=dt;if(pl.fail<.4&&pl.hold>0)pl.hold+=dt}
-        if(pl.hold>=CFG.hold){pl.done=true;const avg=pl.n?pl.sum/pl.n:pl.score;rec(id,{ok:true,score:avg,stars:avg>=.9?3:avg>=.82?2:1});renderSeq()}
+        // 소리: 유지가 시작되면 한 번 칭찬, 1초마다 똑딱
+        const holding=pl.hold>0&&pl.fail<.4,sec=Math.ceil(CFG.hold-pl.hold);
+        if(holding&&!pl.wasHold){beep(988,.1,.12);if(!group())speak('좋아요, 그대로')}
+        pl.wasHold=holding;
+        if(holding&&pl.tick!=null&&sec<pl.tick&&sec>0&&now-SND.beepT>150){beep(sec<=3?880:740,.09,.13);SND.beepT=now}
+        pl.tick=holding?sec:null;
+        if(pl.hold>=CFG.hold){pl.done=true;chime();speak(group()?`${id}번 성공!`:'성공!',true);const avg=pl.n?pl.sum/pl.n:pl.score;rec(id,{ok:true,score:avg,stars:avg>=.9?3:avg>=.82?2:1});renderSeq()}
       }
       const pres=Object.values(S.pl).filter(p=>p.tracked||p.done);
       if(pres.length&&pres.every(p=>p.done))finish();else if(CFG.limit&&S.pt>=CFG.limit)finish();
