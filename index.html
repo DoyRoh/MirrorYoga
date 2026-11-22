@@ -188,7 +188,47 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
  .center{padding:64px 12px 16px}.ctrl .btn{min-width:0;flex:1}
  .tips li{grid-template-columns:32px 1fr;padding:9px 12px}.tips svg{width:32px;height:32px}
 }
-@media (prefers-reduced-motion:reduce){.breath i,.tag i.live,.busy i,#fig circle.pulse,.lettering use{animation:none}.ring circle{transition:none}}
+/* 폰 가로: 왼쪽 따라 할 자세, 오른쪽 거울을 크게 */
+@media (orientation:landscape) and (max-height:520px){
+ .app{height:100vh;height:100dvh;min-height:0}
+ .top{padding:6px 12px;gap:10px}
+ .brand .word{height:22px}.brand .mark{width:28px;height:28px}.brand small{display:none}
+ .dots i{width:14px;height:5px}
+ .ibtn{width:38px;height:38px}.mode{height:38px;padding:0 12px}
+ .stage,.grp .stage{grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:8px;padding:0 10px}
+ .panel{border-radius:22px}
+ .guide{grid-template-rows:minmax(0,1fr) auto}
+ .figbox{display:block}
+ .chips{position:absolute;padding:0;left:10px;top:8px;right:10px}.chip{font-size:12px;padding:2px 9px}.chip:nth-child(n+3){display:none}
+ .breath{position:absolute;margin:0;top:auto;bottom:4px;right:10px;font-size:12px;padding:3px 10px 3px 6px}.breath i{width:14px;height:14px}
+ .figbox>svg{position:absolute;top:30px;height:calc(100% - 30px)}
+ .info{padding:0 14px 10px}.info h2{font-size:22px}.info .sub{font-size:12px;margin:2px 0 0}
+ .steps,.legend{display:none}
+ .view,.grp .view{aspect-ratio:auto;max-height:none}
+ .mirror .intro{position:absolute}
+ .mirror:has(.intro:not([hidden])) .view{display:block}
+ .intro{place-items:start center;padding:14px}
+ .lettering{width:104px}.icard{gap:8px}.icard h1{font-size:20px}.icard p{font-size:13px}.tips{display:none}.btn{min-height:44px}
+ .hud-bot{padding:6px 8px}.say{font-size:17px;padding:6px 12px;min-height:0}.hold{font-size:12px}.solo{gap:4px}
+ .hud-top{left:8px;right:8px;top:8px}.tag{font-size:12px;padding:4px 10px}
+ .ring{width:66px}.ring b{font-size:20px}.ring small{font-size:10px}
+ .group{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px}
+ .pcard{padding:5px 8px;gap:6px}.pc,.group.one .pc{font-size:14px}.pa{font-size:15px}.pn{width:26px;height:26px;font-size:15px}
+ .center{padding:46px 12px 12px}.center .big{font-size:44px}.center b{font-size:16px}.center .st{font-size:28px}.ccard{padding:12px 22px}
+ .seq{padding:6px 10px;flex-wrap:nowrap}.cards{display:none}
+ .ctrl{width:100%;justify-content:center}.ctrl .btn{min-height:40px;min-width:150px;flex:0 0 auto;font-size:15px}
+}
+/* 폰 세로로 시작하면 가로로 돌려 달라는 안내 */
+.rot{display:none;position:fixed;inset:0;z-index:15;place-items:center;padding:24px;background:rgba(238,243,247,.95);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);text-align:center}
+.rcard{display:grid;gap:12px;justify-items:center;max-width:320px}
+.rcard svg{width:104px;height:104px}
+.rcard b{font-size:24px;font-weight:800;letter-spacing:-.03em}
+.rcard p{margin:0;color:var(--mute)}
+.rot .ph{transform-box:view-box;transform-origin:52px 52px;animation:turn 2.6s ease-in-out infinite}
+@keyframes turn{0%,20%{transform:rotate(0)}55%,100%{transform:rotate(-90deg)}}
+.phone-tip{display:none!important}
+@media (orientation:portrait) and (max-width:600px){.live .rot:not(.off){display:grid}.phone-tip{display:grid!important}}
+@media (prefers-reduced-motion:reduce){.rot .ph,.breath i,.tag i.live,.busy i,#fig circle.pulse,.lettering use{animation:none}.ring circle{transition:none}}
 </style>
 </head>
 <body>
@@ -259,6 +299,7 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
       <li><svg viewBox="0 0 40 40" fill="none" stroke="#5b8ec2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="25" cy="9" r="3.4"/><path d="M25 13v12m0-8l-5 4m5-4l5 4m-5 4l-4 8m4-8l4 8M4 34h12M4 34l3-3m-3 3l3 3M16 34l-3-3m3 3l-3 3"/></svg><span>카메라에서 <b>2.5~4m</b>, 머리부터 발끝까지 보이되 키가 <b>화면 높이의 절반 이상</b> 되게</span></li>
       <li><svg viewBox="0 0 40 40" fill="none" stroke="#5b8ec2" stroke-width="2.4" stroke-linecap="round"><circle cx="20" cy="20" r="6.5"/><path d="M20 4v5M20 31v5M4 20h5M31 20h5M8.7 8.7l3.5 3.5M27.8 27.8l3.5 3.5M8.7 31.3l3.5-3.5M27.8 12.2l3.5-3.5"/></svg><span>밝은 곳에서, 창문이나 조명을 <b>등지지 않게</b></span></li>
       <li><svg viewBox="0 0 40 40" fill="none" stroke="#5b8ec2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="10" r="3.4"/><circle cx="29" cy="10" r="3.4"/><path d="M5 34V22a6 6 0 0 1 12 0v12M23 34V22a6 6 0 0 1 12 0v12"/></svg><span>여러 명이면 <b>1.5m 간격으로 나란히</b>, 팔다리가 서로 겹치지 않게</span></li>
+      <li class="phone-tip"><svg viewBox="0 0 40 40" fill="none" stroke="#5b8ec2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="12" width="28" height="17" rx="3"/><path d="M28 7a9 9 0 0 1 6 5M31 13l3-1 0-3"/></svg><span>폰은 <b>가로로 돌려서</b> 쓰면 내 모습이 크게 나와요</span></li>
      </ul>
      <div class="row" id="introBtns">
       <button class="btn" id="camBtn" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM16 10.5l5-3v9l-5-3z"/></svg>카메라로 시작</button>
@@ -281,6 +322,14 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
    <button class="ibtn" id="againBtn" type="button" aria-label="처음부터 다시" title="처음부터 다시"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 4v5h5"/></svg></button>
   </div>
  </footer>
+<div class="rot" id="rot" role="dialog" aria-label="폰을 가로로 돌려 주세요">
+ <div class="rcard">
+  <svg viewBox="0 0 104 104" aria-hidden="true"><circle cx="52" cy="52" r="48" fill="#dbe8f2"/><g class="ph"><rect x="36" y="18" width="32" height="68" rx="7" fill="#fff" stroke="#46637f" stroke-width="3.5"/><path d="M47 25h10" stroke="#46637f" stroke-width="3" stroke-linecap="round"/></g></svg>
+  <b>폰을 가로로 돌려 주세요</b>
+  <p>왼쪽엔 따라 할 자세, 오른쪽엔 내 모습이 크게 보여요. 폰은 세워 두고 2~3m 떨어져 서 주세요.</p>
+  <button class="btn ghost" id="rotSkip" type="button">세로로 그냥 할게요</button>
+ </div>
+</div>
 </div>
 
 <div class="modal" id="setModal" hidden>
@@ -389,7 +438,7 @@ POSES.forEach(P=>{P.v=[{p:P.p,chk:P.chk},{p:mirrorP(P.p),chk:Object.fromEntries(
 
 /* ── 설정 ── */
 const LV={easy:{m:1.3,thr:.72},normal:{m:1,thr:.78},hard:{m:.8,thr:.84}};
-const CFG={lvl:'normal',hold:5,limit:60,model:'full',cam:'',bones:true,people:4,dev:'GPU'};
+const CFG={lvl:'normal',hold:5,limit:60,model:'full',cam:'',bones:true,people:matchMedia('(max-width:600px),(max-height:520px)').matches?1:4,dev:'GPU'};
 try{Object.assign(CFG,JSON.parse(localStorage.getItem('mirror-yoga')||'{}'))}catch(e){}
 const save=()=>{try{localStorage.setItem('mirror-yoga',JSON.stringify(CFG))}catch(e){}};
 const SETS=[['people','동시 인식 인원',[[1,'1명'],[2,'2명'],[3,'3명'],[4,'4명']],'여러 명이면 왼쪽부터 1·2·3·4번을 붙여 따로 채점해요. 사람이 너무 작게 찍히면 인식이 안 되니 키가 화면 높이의 절반 이상 되게 서 주세요. 3명 이상이면 인식 모델은 ‘빠름’을 권해요.'],
@@ -710,7 +759,8 @@ function drawMirror(){
   const w=cv.width,h=cv.height;if(w<2||h<2)return;
   const g=group(),cam=S.mode==='camera'&&vid.readyState>=2&&vid.videoWidth>0,W=cam?vid.videoWidth:1280,H=cam?vid.videoHeight:720;
   // 혼자면 크게(가장자리 잘림), 여러 명이면 카메라 화면 전체를 보여 줌
-  const s=g?Math.min(w/W,h/H):Math.max(w/W,h/H),ox=(w-W*s)/2,oy=(h-H*s)/2;
+  // 화면이 카메라보다 가로로 길면(폰 가로) 위아래가 잘리지 않게 높이에 맞춘다
+  const s=g?Math.min(w/W,h/H):w/h>W/H?h/H:Math.max(w/W,h/H),ox=(w-W*s)/2,oy=(h-H*s)/2;
   S.crop={x0:Math.max(0,-ox/s),x1:Math.min(W,(w-ox)/s),y0:Math.max(0,-oy/s),y1:Math.min(H,(h-oy)/s)};
   if(cam){cx.fillStyle='#e4edf3';cx.fillRect(0,0,w,h);cx.save();cx.translate(w,0);cx.scale(-1,1);cx.drawImage(vid,ox,oy,W*s,H*s);cx.restore()}else room(w,h,ox,oy,s);
   if(!S.mode)return;
@@ -848,10 +898,10 @@ function summary(){
   openModal('sumModal');
 }
 function begin(mode){
-  S.mode=mode;S.res=[];S.tracks=[];$('intro').hidden=true;$('hudBot').hidden=false;S.phase='ready';go(S.idx);
+  S.mode=mode;$('app').classList.add('live');S.res=[];S.tracks=[];$('intro').hidden=true;$('hudBot').hidden=false;S.phase='ready';go(S.idx);
 }
 function home(){
-  stopCam();S.mode=null;S.phase='intro';S.tracks=[];S.pl={};S.demo=null;$('intro').hidden=false;$('hudBot').hidden=true;$('err').hidden=true;busy(false);go(S.idx);
+  stopCam();$('app').classList.remove('live');S.mode=null;S.phase='intro';S.tracks=[];S.pl={};S.demo=null;$('intro').hidden=false;$('hudBot').hidden=true;$('err').hidden=true;busy(false);go(S.idx);
 }
 function togglePause(){
   if(!S.mode){$('camBtn').focus();return}
@@ -884,6 +934,9 @@ $('setBtn').onclick=()=>{renderSettings();openModal('setModal')};
 $('setClose').onclick=closeModals;
 $('sumClose').onclick=closeModals;
 $('sumAgain').onclick=again;
+$('rotSkip').onclick=()=>$('rot').classList.add('off');
+// 폰을 돌리면 카메라 방향이 바뀌므로 카메라를 다시 연다
+{let rt=0;matchMedia('(orientation: portrait)').addEventListener('change',()=>{clearTimeout(rt);if(S.mode==='camera')rt=setTimeout(()=>openCam().catch(e=>fail(e.name||'unknown')),450)})}
 $('fsBtn').onclick=fs;
 function fs(){
   const d=document,el=d.documentElement;
