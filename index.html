@@ -538,6 +538,83 @@ const LYING=[
   chk:{hpL:[12,1.4],hpR:[12,1.2],knL:[15,.8],knR:[15,.8],elL:[18,1],shL:[18,1.2],shR:[22,.8],tilt:[12,1]},
   err:{rot:-76}}
 ];
+// ── 동작 더 늘리기 (모두 정면에서 팔다리 각도가 잘 보이는 동작) ──
+const ST2={th:2,sh:1};
+const HANDS_HEAD={name:'머리 뒤 깍지 팔꿈치 열기',en:'Elbows wide',sub:'가슴과 어깨 앞 열기',lv:1,asym:false,
+  p:{tilt:0,nk:0,L:{ua:125,fa:255,...ST2},R:{ua:125,fa:255,...ST2}},
+  steps:['두 손을 머리 뒤에서 깍지 껴요','팔꿈치를 양옆으로 활짝 벌려요','가슴을 펴고 턱은 살짝 당겨요'],
+  chk:{elL:[22,1.2],elR:[22,1.2],shL:[20,1.1],shR:[20,1.1],tilt:[7,.5],nk:[10,.3]},
+  err:{L:{ua:95,fa:170},R:{ua:95,fa:170}}};
+const NECK_PULL={name:'손으로 당겨 목 늘리기',en:'Assisted neck stretch',sub:'손 무게로 지그시',lv:2,asym:true,
+  p:{tilt:0,nk:30,L:{ua:9,fa:7,...ST2},R:{ua:150,fa:250,...ST2}},
+  steps:['한 손을 머리 위로 넘겨 반대쪽 귀 위에 얹어요','손 무게로 고개를 지그시 옆으로 당겨요','반대쪽 어깨는 아래로 툭 내려요'],
+  chk:{nk:[9,2],elR:[25,1],shR:[20,1],tilt:[7,.8],shL:[22,.4]},
+  err:{nk:8}};
+const SCARECROW={name:'허수아비 팔',en:'Scarecrow arms',sub:'어깨 안쪽으로 돌리기',lv:1,asym:false,
+  p:{tilt:0,nk:0,L:{ua:90,fa:0,...ST2},R:{ua:90,fa:0,...ST2}},
+  steps:['두 팔을 옆으로 어깨 높이까지 올려요','팔꿈치를 굽혀 손끝이 바닥을 향하게','팔꿈치 높이는 그대로, 어깨를 부드럽게'],
+  chk:{elL:[18,1.3],elR:[18,1.3],shL:[15,1.2],shR:[15,1.2],tilt:[7,.5]},
+  err:{L:{fa:60},R:{fa:55}}};
+const WIDE_V={name:'넓게 서서 V자 기지개',en:'Wide V stretch',sub:'다리 넓게, 팔은 위로',lv:1,asym:false,
+  p:{tilt:0,nk:0,L:{ua:150,fa:150,th:24,sh:24},R:{ua:150,fa:150,th:24,sh:24}},
+  steps:['다리를 어깨보다 넓게 벌려요','두 팔을 비스듬히 위로 뻗어 V자를 만들어요','손끝과 발끝을 멀리멀리'],
+  chk:{shL:[15,1.2],shR:[15,1.2],elL:[18,.8],elR:[18,.8],stance:[.6,1.2],knL:[15,.6],knR:[15,.6],tilt:[7,.5]},
+  err:{L:{th:6,sh:6},R:{th:6,sh:6}}};
+const GODDESS_UP={name:'여신 자세 팔 위로',en:'Goddess arms up',sub:'앉아 버티며 기지개',lv:2,asym:false,
+  p:{tilt:0,nk:0,L:{ua:165,fa:170,th:70,sh:8},R:{ua:165,fa:170,th:70,sh:8}},
+  steps:['발을 넓게 벌리고 발끝은 바깥쪽으로','무릎을 굽혀 엉덩이를 낮춰요','두 팔은 머리 위로 쭉 뻗어요'],
+  chk:{knL:[18,1.3],knR:[18,1.3],shL:[20,1],shR:[20,1],elL:[22,.6],elR:[22,.6],anL:[12,.7],anR:[12,.7],stance:[.8,.7],tilt:[8,.5]},
+  err:{L:{th:40,sh:30},R:{th:40,sh:30}}};
+const WIDE_BEND={name:'넓게 서서 옆구리 늘리기',en:'Wide side bend',sub:'다리 넓게, 옆으로 기울이기',lv:2,asym:true,
+  p:{tilt:25,nk:0,L:{ua:210,fa:220,th:24,sh:24},R:{ua:15,fa:10,th:24,sh:24}},
+  steps:['다리를 넓게 벌리고 무릎은 쭉 펴요','한 팔을 머리 위로 넘기며 옆으로 기울여요','아래 손은 허벅지를 따라 미끄러지듯'],
+  chk:{tilt:[8,1.8],shL:[20,1],elL:[22,.5],knL:[15,.7],knR:[15,.7],stance:[.6,1]},
+  err:{tilt:6}};
+const WIDE_SQUAT={name:'와이드 스쿼트 손 허리',en:'Wide squat',sub:'허벅지 안쪽 힘',lv:2,asym:false,
+  p:{tilt:0,nk:0,L:{ua:35,fa:-55,th:70,sh:8},R:{ua:35,fa:-55,th:70,sh:8}},
+  steps:['발을 넓게 벌리고 손은 허리에','무릎을 발끝 방향으로 굽혀 앉아요','무릎이 안으로 모이지 않게 버텨요'],
+  chk:{knL:[18,1.4],knR:[18,1.4],elL:[28,.5],elR:[28,.5],anL:[12,.7],anR:[12,.7],stance:[.8,.8],tilt:[8,.6]},
+  err:{L:{th:40,sh:30},R:{th:40,sh:30}}};
+const HIGH_LEG={name:'다리 옆으로 높이 들기',en:'High side leg raise',sub:'한 발로 서서 높이',lv:3,asym:true,
+  p:{tilt:0,nk:0,L:{ua:90,fa:90,th:-1,sh:-1},R:{ua:90,fa:90,th:58,sh:58}},
+  steps:['두 팔을 옆으로 펴서 균형을 잡아요','한쪽 다리를 옆으로 최대한 높이 들어요','상체가 기울지 않게 똑바로 버텨요'],
+  chk:{hpR:[12,1.5],knR:[15,.9],knL:[15,.9],shL:[20,.5],shR:[20,.5],tilt:[9,.7]},
+  err:{R:{th:30,sh:30}}};
+const REV_WARRIOR={name:'반전사 자세',en:'Reverse warrior',sub:'뒤로 젖히며 옆구리',lv:3,asym:true,
+  p:{tilt:-28,nk:0,L:{ua:12,fa:12,th:52,sh:52},R:{ua:195,fa:200,th:76,sh:5}},
+  steps:['전사 자세 2에서 앞 무릎은 굽힌 그대로','앞쪽 팔을 하늘로 올리며 상체를 뒤로 기울여요','뒤쪽 손은 뒷다리를 따라 미끄러뜨려요'],
+  chk:{tilt:[9,1.6],knR:[18,1.5],knL:[15,1],shR:[22,1],elR:[22,.5],anR:[12,.7],stance:[.8,.7]},
+  err:{tilt:0}};
+const GODDESS_BEND={name:'여신 자세 옆으로 기울이기',en:'Goddess side bend',sub:'앉아 버티며 옆구리',lv:3,asym:true,
+  p:{tilt:25,nk:0,L:{ua:215,fa:225,th:70,sh:8},R:{ua:35,fa:-40,th:70,sh:8}},
+  steps:['여신 자세로 무릎을 굽혀 앉아요','한쪽 팔꿈치를 허벅지에 얹어요','반대쪽 팔을 머리 위로 넘기며 옆으로 기울여요'],
+  chk:{tilt:[8,1.6],knL:[18,1.2],knR:[18,1.2],shL:[20,1],elL:[22,.5],stance:[.8,.6]},
+  err:{tilt:5}};
+const STAR_LIFT={name:'별 자세 한 다리 들기',en:'Star balance',sub:'한 발로 서서 별 만들기',lv:3,asym:true,
+  p:{tilt:0,nk:0,L:{ua:130,fa:130,th:-1,sh:-1},R:{ua:130,fa:130,th:45,sh:45}},
+  steps:['두 팔을 비스듬히 위로 뻗어요','한쪽 다리를 옆으로 들어 올려요','머리, 두 손, 들어 올린 발로 별 모양!'],
+  chk:{hpR:[12,1.5],shL:[18,.9],shR:[18,.9],knR:[15,.8],knL:[15,.8],tilt:[9,.7]},
+  err:{R:{th:12,sh:12}}};
+const LY_ARM={name:'옆으로 누워 팔 머리 위로',en:'Side-lying reach',sub:'옆구리 길게',lv:1,asym:true,
+  p:{tilt:0,nk:0,rot:-90,L:{ua:175,fa:175,...ST2},R:{ua:175,fa:175,...ST2}},
+  steps:['카메라를 보고 옆으로 누워요','위쪽 팔을 귀 옆으로 머리 위까지 쭉 뻗어요','손끝과 발끝이 서로 멀어지게'],
+  chk:{shR:[20,1.5],elR:[20,.8],hpL:[15,.6],hpR:[15,.6],knL:[15,.5],knR:[15,.5],tilt:[20,.8]},
+  err:{R:{ua:90,fa:90}}};
+const LY_KNEE={name:'옆으로 누워 무릎 들기',en:'Side-lying knee lift',sub:'골반 옆 풀기',lv:2,asym:true,
+  p:{tilt:0,nk:0,rot:-90,L:{ua:175,fa:175,...ST2},R:{ua:20,fa:10,th:75,sh:-15}},
+  steps:['카메라를 보고 옆으로 누워요','위쪽 무릎을 굽혀 천장 쪽으로 들어 올려요','아래 다리는 곧게 펴 둬요'],
+  chk:{hpR:[15,1.5],knR:[20,1.2],knL:[15,.6],tilt:[20,.8]},
+  err:{R:{th:35,sh:20}}};
+const LY_HIGH={name:'옆으로 누워 다리 높이 들기',en:'Side-lying high leg',sub:'엉덩이 옆 힘껏',lv:2,asym:true,
+  p:{tilt:0,nk:0,rot:-90,L:{ua:175,fa:175,...ST2},R:{ua:20,fa:10,th:62,sh:62}},
+  steps:['카메라를 보고 옆으로 누워요','위쪽 다리를 무릎 편 채로 높이 들어 올려요','몸이 뒤로 넘어가지 않게 버텨요'],
+  chk:{hpR:[12,1.6],knR:[15,.8],knL:[15,.6],tilt:[20,.8]},
+  err:{R:{th:35,sh:35}}};
+BASIC.push(WIDE_V,GODDESS_UP,WIDE_BEND);
+NECK.push(HANDS_HEAD,NECK_PULL,SCARECROW);
+LEGS.splice(1,0,WIDE_SQUAT);LEGS.push(HIGH_LEG);
+CHALLENGE.splice(2,0,REV_WARRIOR,GODDESS_BEND,STAR_LIFT);
+LYING.splice(0,0,LY_ARM);LYING.splice(2,0,LY_KNEE,LY_HIGH);
 // 아이와 함께: 이미 검증한 동작에 동물 이름과 쉬운 말 설명을 붙인 과정
 const KIDS=[
  {...BASIC[0],name:'키 큰 기린',en:'Giraffe',sub:'목을 길게, 팔은 하늘로',lv:1,
@@ -557,7 +634,11 @@ const KIDS=[
   p:{tilt:0,nk:0,L:{ua:90,fa:90,th:-1,sh:-1},R:{ua:90,fa:90,th:62,sh:0}},
   steps:['두 팔을 옆으로 펴서 균형을 잡아요','홍학처럼 한쪽 무릎을 옆으로 살짝 들어요','흔들려도 괜찮아요, 한 곳을 바라봐요'],
   chk:{hpR:[18,1.3],knR:[25,.8],knL:[15,1],shL:[22,.5],shR:[22,.5],tilt:[10,.6]},
-  err:{R:{th:20,sh:5}}}
+  err:{R:{th:20,sh:5}}},
+ {...SCARECROW,name:'허수아비',sub:'팔 들고 손은 아래로',steps:['두 팔을 옆으로 쭉 올려요','팔꿈치만 굽혀 손을 아래로 툭!','허수아비처럼 가만히 서 있어요']},
+ {...HANDS_HEAD,name:'팔랑팔랑 나비',sub:'팔꿈치 날개',steps:['두 손을 머리 뒤에 대요','팔꿈치를 나비 날개처럼 활짝 펴요','날개를 접지 말고 버텨요']},
+ {...WIDE_V,name:'활짝 해바라기',sub:'햇님을 향해 쭉',steps:['다리를 넓게 벌려요','두 팔을 해바라기처럼 V자로 쭉!','얼굴은 햇님을 보듯 위로']},
+ {...WARRIOR,name:'파도 타는 서퍼',sub:'서핑보드 위에서',lv:2,steps:['다리를 넓게 벌리고 한쪽 발끝을 옆으로','그쪽 무릎을 굽혀 파도 위에 서요','두 팔을 쭉 펴서 균형을 잡아요']}
 ];
 const COURSES=[
  {id:'basic',name:'기초 스트레칭',sub:'온몸 가볍게',poses:BASIC},
