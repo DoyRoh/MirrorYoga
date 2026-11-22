@@ -538,8 +538,48 @@ const LYING=[
   chk:{hpL:[12,1.4],hpR:[12,1.2],knL:[15,.8],knR:[15,.8],elL:[18,1],shL:[18,1.2],shR:[22,.8],tilt:[12,1]},
   err:{rot:-76}}
 ];
+// 아이와 함께: 이미 검증한 동작에 동물 이름과 쉬운 말 설명을 붙인 과정
+const KIDS=[
+ {...BASIC[0],name:'키 큰 기린',en:'Giraffe',sub:'목을 길게, 팔은 하늘로',lv:1,
+  steps:['두 발을 꼭 붙이고 서요','기린처럼 두 팔을 하늘 높이 쭉 뻗어요','발뒤꿈치는 바닥에, 손끝은 구름까지']},
+ {name:'날개 펼친 독수리',en:'Eagle wings',sub:'하늘을 나는 것처럼',lv:1,asym:false,
+  p:{tilt:0,nk:0,L:{ua:90,fa:90,th:2,sh:1},R:{ua:90,fa:90,th:2,sh:1}},
+  steps:['바르게 서서 앞을 봐요','두 팔을 옆으로 쫙 펴서 날개를 만들어요','날개가 처지지 않게 어깨 높이로 버텨요'],
+  chk:{shL:[15,1.3],shR:[15,1.3],elL:[18,1],elR:[18,1],tilt:[7,.6]},
+  err:{R:{ua:58,fa:52}}},
+ {...BASIC[1],name:'구부러진 바나나',en:'Banana',sub:'옆으로 휘어지기',lv:1,
+  steps:['두 팔을 머리 위로 올려 손바닥을 붙여요','바나나처럼 몸을 옆으로 휘어요','엉덩이는 가운데, 팔은 귀에 붙여요']},
+ {...BASIC[2],name:'반짝 불가사리',en:'Starfish',sub:'다섯 방향으로 쭉',lv:1,
+  steps:['다리를 넓게 벌리고 서요','팔도 옆으로 활짝 펴요','머리, 손, 발 다섯 군데를 멀리 보내요']},
+ {...GODDESS,name:'폴짝 개구리',en:'Frog',sub:'무릎 굽혀 쭈그려 앉기',lv:2,
+  steps:['발을 넓게 벌리고 발끝은 바깥쪽으로','개구리처럼 무릎을 굽혀 엉덩이를 내려요','팔꿈치를 굽혀 손을 위로 들어요']},
+ {name:'한 발 홍학',en:'Flamingo',sub:'한 발로 균형 잡기',lv:2,asym:true,
+  p:{tilt:0,nk:0,L:{ua:90,fa:90,th:-1,sh:-1},R:{ua:90,fa:90,th:62,sh:0}},
+  steps:['두 팔을 옆으로 펴서 균형을 잡아요','홍학처럼 한쪽 무릎을 옆으로 살짝 들어요','흔들려도 괜찮아요, 한 곳을 바라봐요'],
+  chk:{hpR:[18,1.3],knR:[25,.8],knL:[15,1],shL:[22,.5],shR:[22,.5],tilt:[10,.6]},
+  err:{R:{th:20,sh:5}}}
+];
+// 춤 따라하기: 쉬운 동작을 1.5초씩 빠르게 이어 간다 (박자 소리와 함께)
+const ARMUP={name:'한 팔 번쩍',en:'One arm up',sub:'한쪽 팔을 하늘로',lv:1,asym:true,
+  p:{tilt:0,nk:0,L:{ua:176,fa:178,th:2,sh:1},R:{ua:12,fa:10,th:2,sh:1}},
+  steps:['한쪽 팔을 하늘로 번쩍!'],chk:{shL:[22,1.3],elL:[25,.6],shR:[25,.6],tilt:[9,.5]},err:{L:{ua:120,fa:125}}};
+const mv=(b,name,step)=>({...b,name,sub:'박자에 맞춰',lv:1,steps:[step]});
+const DANCE=[
+ mv(BASIC[0],'두 팔 위로 짠','두 팔을 위로 쭉!'),
+ mv(KIDS[1],'비행기','팔을 옆으로 쫙!'),
+ mv(ARMUP,'한 팔 번쩍','한쪽 팔을 하늘로!'),
+ mv(NECK[2],'선인장','팔꿈치 굽혀 손은 위로!'),
+ mv(NECK[4],'Y!','팔을 Y자로!'),
+ mv(BASIC[1],'옆으로 기우뚱','팔 올리고 옆으로 기우뚱!'),
+ mv(GODDESS,'개구리 쿵','무릎 굽히고 팔은 선인장!'),
+ mv(BASIC[2],'별 반짝','팔다리 쫙 벌려 별!'),
+ mv(NECK[3],'W!','팔을 W자로!'),
+ mv(BASIC[0],'마무리 짠','두 팔을 위로, 끝!')
+];
 const COURSES=[
  {id:'basic',name:'기초 스트레칭',sub:'온몸 가볍게',poses:BASIC},
+ {id:'kids',name:'동물 친구 요가',sub:'아이와 함께 재밌게',poses:KIDS},
+ {id:'dance',name:'춤 따라하기',sub:'박자 맞춰 빠르게',hold:1.5,limit:8,fast:true,beat:true,poses:DANCE},
  {id:'neck',name:'목·어깨 풀기',sub:'굳은 목과 어깨',poses:NECK},
  {id:'legs',name:'하체 스트레칭',sub:'다리와 골반',poses:LEGS},
  {id:'challenge',name:'도전! 전신 균형',sub:'조금 어려운 동작',poses:CHALLENGE},
@@ -566,13 +606,16 @@ const LV={easy:{m:1.15,thr:.7,pt:70},normal:{m:1,thr:.8,pt:80},hard:{m:1,thr:.9,
 const CFG={sound:'all',course:'basic',lvl:'normal',hold:5,limit:60,model:'full',cam:'',bones:true,people:matchMedia('(max-width:600px),(max-height:520px)').matches?1:4,dev:'GPU'};
 try{Object.assign(CFG,JSON.parse(localStorage.getItem('mirror-yoga')||'{}'))}catch(e){}
 const courseOf=id=>COURSES.find(c=>c.id===id)||COURSES[0];
+// 과정마다 유지 시간·제한 시간·준비 시간을 따로 둘 수 있다 (춤 과정은 짧고 빠르게)
+const HOLD=()=>courseOf(CFG.course).hold||CFG.hold,LIMIT=()=>{const c=courseOf(CFG.course);return c.limit!=null?c.limit:CFG.limit};
+const READY=()=>courseOf(CFG.course).fast?1.2:3,AFTER=()=>courseOf(CFG.course).fast?.7:2.6;
 POSES.push(...courseOf(CFG.course).poses);
 const save=()=>{try{localStorage.setItem('mirror-yoga',JSON.stringify(CFG))}catch(e){}};
 const SETS=[['course','과정',COURSES.map(c=>[c.id,c.name]),'과정을 바꾸면 첫 자세부터 다시 시작해요.'],
  ['people','동시 인식 인원',[[1,'1명'],[2,'2명'],[3,'3명'],[4,'4명']],'여러 명이면 왼쪽부터 1·2·3·4번을 붙여 따로 채점해요. 사람이 너무 작게 찍히면 인식이 안 되니 키가 화면 높이의 절반 이상 되게 서 주세요. 3명 이상이면 인식 모델은 ‘빠름’을 권해요.'],
  ['lvl','난이도 (통과 점수)',[['easy','쉬움 · 70점'],['normal','보통 · 80점'],['hard','어려움 · 90점']],'자세 점수가 이 점수를 넘으면 원형 카운트가 돌기 시작해요. 아이들과 함께라면 쉬움을 권해요.'],
- ['hold','자세 유지 시간',[[3,'3초'],[5,'5초'],[10,'10초']],''],
- ['limit','자세당 제한 시간',[[30,'30초'],[60,'60초'],[90,'90초'],[0,'없음']],'시간이 지나면 다음 자세로 넘어가요.'],
+ ['hold','자세 유지 시간',[[3,'3초'],[5,'5초'],[10,'10초'],[15,'15초'],[20,'20초']],'점수가 통과선을 넘은 채로 이만큼 버티면 성공이에요. (춤 따라하기는 항상 1.5초)'],
+ ['limit','자세당 제한 시간',[[30,'30초'],[60,'60초'],[90,'90초'],[120,'2분'],[0,'없음']],'시간이 지나면 다음 자세로 넘어가요.'],
  ['model','인식 모델',[['lite','빠름'],['full','정확']],'화면이 끊기면 ‘빠름’으로 바꿔 보세요.'],
  ['dev','처리 방식',[['GPU','GPU'],['CPU','CPU']],'아이패드 등에서 뼈대가 엉뚱하게 그려지면 CPU로 바꿔 보세요.'],
  ['sound','소리',[['all','음성 안내 + 효과음'],['fx','효과음만'],['off','끄기']],'자세 이름, 고칠 곳, 3·2·1 카운트를 소리로 알려 줘요. 아이폰은 무음 모드를 꺼야 들려요.'],
@@ -886,7 +929,7 @@ function guideArrows(J,P,s,pl,now){
 }
 function badge(J,P,pl,col){
   const h=P(J.nose),r=Math.max(13,cv.height/40),x=h[0],y=Math.max(r*1.6,h[1]-r*3);
-  if(pl&&pl.hold>0){cx.beginPath();cx.arc(x,y,r*1.32,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(1,pl.hold/CFG.hold));cx.strokeStyle=COL.ok;cx.lineWidth=r*.3;cx.stroke()}
+  if(pl&&pl.hold>0){cx.beginPath();cx.arc(x,y,r*1.32,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(1,pl.hold/HOLD()));cx.strokeStyle=COL.ok;cx.lineWidth=r*.3;cx.stroke()}
   cx.beginPath();cx.arc(x,y,r,0,7);cx.fillStyle=col;cx.fill();
   cx.fillStyle='#ffffff';cx.textAlign='center';cx.textBaseline='middle';cx.font=`800 ${Math.round(r*1.25)}px "Pretendard Variable", Pretendard, sans-serif`;
   cx.fillText(pl&&pl.done?'✓':String(pl?pl.id:''),x,y+r*.06);
@@ -898,7 +941,7 @@ function holdRing(pl,J,P,s){
   const w=cv.width,h=cv.height,g=group();let x,y,R;
   if(!g){x=w/2;y=h*.46;R=Math.min(w,h)*.34}
   else{const c=mid(mid(J.lSh,J.rSh),mid(J.lHp,J.rHp)),a=mid(J.lAn,J.rAn),q=P(c);x=q[0];y=q[1];R=Math.max(h*.12,Math.hypot(J.nose[0]-a[0],J.nose[1]-a[1])*s*.42)}
-  const fr=Math.min(1,pl.hold/CFG.hold),left=Math.max(1,Math.ceil(CFG.hold-pl.hold)),pop=RM?1:.86+.14*ease(Math.min(1,pl.hold/.3)),lw=R*.1;
+  const fr=Math.min(1,pl.hold/HOLD()),left=Math.max(1,Math.ceil(HOLD()-pl.hold)),pop=RM?1:.86+.14*ease(Math.min(1,pl.hold/.3)),lw=R*.1;
   cx.save();cx.translate(x,y);cx.scale(pop,pop);
   cx.beginPath();cx.arc(0,0,R,0,7);cx.fillStyle='rgba(255,255,255,.16)';cx.fill();
   cx.lineWidth=lw;cx.strokeStyle='rgba(255,255,255,.55)';cx.stroke();
@@ -970,7 +1013,7 @@ function renderPose(){
   const P=POSES[S.idx];
   $('pName').textContent=P.name;$('pSub').textContent=P.en+' · '+P.sub;
   $('pSteps').innerHTML=P.steps.map(s=>`<li>${esc(s)}</li>`).join('');
-  $('chips').innerHTML=`<span class="chip">${courseOf(CFG.course).name} ${S.idx+1} / ${POSES.length}</span><span class="chip">난이도 ${lvTxt(P.lv)}</span>${P.half?`<span class="chip both">${P.half}</span>`:''}<span class="chip">${LV[CFG.lvl].pt}점 넘으면 ${CFG.hold}초 유지</span>`;
+  $('chips').innerHTML=`<span class="chip">${courseOf(CFG.course).name} ${S.idx+1} / ${POSES.length}</span><span class="chip">난이도 ${lvTxt(P.lv)}</span>${P.half?`<span class="chip both">${P.half}</span>`:''}<span class="chip">${LV[CFG.lvl].pt}점 넘으면 ${HOLD()}초 유지</span>`;
   renderCourses();
   $('now').textContent=`${S.idx+1} / ${POSES.length} · ${P.name}`;
   $('app').classList.toggle('grp',group());
@@ -1005,7 +1048,7 @@ function groupCards(ph,dt){
     else[m,c]=plMsg(pl,true);
     sayUpd(pl,m,c,dt,ph!=='active'||!!(r&&r.ok));
     setT(el.querySelector('.pc'),pl.say||'');el.classList.toggle('done',!!(r&&r.ok));
-    el.querySelector('.pb i').style.width=Math.min(100,pl.hold/CFG.hold*100).toFixed(1)+'%';
+    el.querySelector('.pb i').style.width=Math.min(100,pl.hold/HOLD()*100).toFixed(1)+'%';
     setT(el.querySelector('.pa'),r&&r.ok?Math.round(r.score*100)+'%':ph==='active'&&pl.ev?Math.round(pl.score*100)+'%':'');
   }
   gOrder=ord;
@@ -1025,13 +1068,13 @@ function hud(dt){
     const tnow=performance.now();
     if(ph==='active'&&S.ss.say&&S.ss.sayCol!==COL.ok&&S.ss.sayCol!==COL.idle&&tnow-SND.cueT>3200&&(S.ss.say!==SND.cue||tnow-SND.cueT>8000)){speak(S.ss.say);SND.cue=S.ss.say;SND.cueT=tnow}
     setT($('say').lastElementChild,S.ss.say||'자세를 따라 해 보세요');$('say').firstElementChild.style.background=S.ss.sayCol||COL.idle;
-    const hd=p1?p1.hold:0;$('holdBar').style.width=Math.min(100,hd/CFG.hold*100).toFixed(1)+'%';
-    setT($('holdTxt'),`${Math.min(hd,CFG.hold).toFixed(1)} / ${CFG.hold}초`);
+    const hd=p1?p1.hold:0;$('holdBar').style.width=Math.min(100,hd/HOLD()*100).toFixed(1)+'%';
+    setT($('holdTxt'),`${Math.min(hd,HOLD()).toFixed(1)} / ${HOLD()}초`);
   }else if(live)groupCards(ph,dt);
   const anyone=Object.values(S.pl).some(p=>p.tracked);
   let c='';
   if(S.phase==='paused')c='<div class="ccard"><div class="big">일시정지</div><b>Space 또는 ▶ 버튼으로 계속</b></div>';
-  else if(ph==='ready')c=`<div class="ccard"><small>준비</small><div class="big">${Math.max(1,Math.ceil(3-S.pt))}</div><b>${esc(P.name)}</b></div>`;
+  else if(ph==='ready')c=`<div class="ccard"><small>준비</small><div class="big">${Math.max(1,Math.ceil(READY()-S.pt))}</div><b>${esc(P.name)}</b></div>`;
   else if(ph==='active'&&S.mode==='camera'&&(!anyone||!g&&p1&&p1.why==='far'))c='<div class="guide-box"></div>';
   else if(ph==='done'){
     if(!g){const r=resOf(S.idx,1);c=r&&r.ok?`<div class="ccard"><div class="big">성공!</div><div class="st">${starTxt(r.stars)}</div><b>정확도 ${Math.round(r.score*100)}%</b></div>`:'<div class="ccard"><div class="big">시간 종료</div><b>다음 자세로 넘어갈게요</b></div>'}
@@ -1041,7 +1084,7 @@ function hud(dt){
   setH($('center'),c);
   const nT=S.tracks.filter(t=>t.lost===0).length;
   setH($('tag'),!live?'<i></i><span>거울</span>':S.mode==='demo'?`<i class="demo"></i><span>거울 · 데모 (가상 인물${g?' '+S.tracks.length+'명':''})</span>`:loading?'<i></i><span>모델 바꾸는 중…</span>':nT?`<i class="live"></i><span>거울 · ${g?nT+'명 ':''}인식 중</span>`:'<i class="live"></i><span>거울 · 사람을 찾는 중</span>');
-  setH($('clock'),ph==='active'&&live?(CFG.limit?`남은 시간 <b>${mmss(CFG.limit-S.pt)}</b>`:`경과 <b>${mmss(S.pt)}</b>`):CFG.limit?`자세당 <b>${CFG.limit}초</b>`:'제한 시간 없음');
+  setH($('clock'),ph==='active'&&live?(LIMIT()?`남은 시간 <b>${mmss(LIMIT()-S.pt)}</b>`:`경과 <b>${mmss(S.pt)}</b>`):LIMIT()?`자세당 <b>${LIMIT()}초</b>`:'제한 시간 없음');
   const br=$('breath');br.hidden=!(live&&ph==='active');
   if(!br.hidden)setT($('breathTxt'),RM?'편안하게 숨 쉬어요':Math.floor(S.pt/4)%2?'천천히 내쉬고':'깊게 들이마시고');
   $('modeBtn').hidden=S.mode!=='demo';$('homeBtn').hidden=$('homeBtn2').hidden=!S.mode;
@@ -1068,7 +1111,7 @@ function go(i){
   renderPose();renderSeq();setPlay();
 }
 function finish(){
-  if(!Object.values(S.pl).some(p=>p.tracked||p.done)||Object.values(S.pl).some(p=>p.tracked&&!p.done))speak('시간이 다 됐어요. 다음 자세로 넘어가요',true);
+  if(!courseOf(CFG.course).fast&&(!Object.values(S.pl).some(p=>p.tracked||p.done)||Object.values(S.pl).some(p=>p.tracked&&!p.done)))speak('시간이 다 됐어요. 다음 자세로 넘어가요',true);
   for(const id in S.pl){const pl=S.pl[id];if(!resOf(S.idx,id))rec(id,{ok:false,score:pl.best,stars:0})}
   if(!S.res[S.idx])S.res[S.idx]={skip:true};
   S.phase='done';S.pt=0;renderSeq();
@@ -1209,7 +1252,9 @@ function loop(now){
       pl.ev=act&&pl.seen&&!pl.why&&!pl.done?evaluate(t.J,pl):pl.seen?null:pl.ev;
     }
     for(const id in S.pl)if(!S.pl[id].tracked)S.pl[id].ev=null;
-    if(S.phase==='ready'){S.pt+=dt;if(S.pt>=3){S.phase='active';S.pt=0;beep(660,.18);speak('시작',true);S.figT=S.loopT>=2.4&&S.loopT<6.4?1.4:0}}
+    // 춤 과정: 120bpm 박자 (네 번째마다 강하게)
+    if(courseOf(CFG.course).beat&&S.mode&&(S.phase==='ready'||S.phase==='active'||S.phase==='done')){const bt=Math.floor(now/500);if(bt!==SND.bt){SND.bt=bt;beep(bt%4?520:780,.06,bt%4?.07:.11)}}
+    if(S.phase==='ready'){S.pt+=dt;if(S.pt>=READY()){S.phase='active';S.pt=0;beep(660,.18);speak('시작',true);S.figT=S.loopT>=2.4&&S.loopT<6.4?1.4:0}}
     else if(act){
       S.pt+=dt;
       for(const id in S.pl){
@@ -1217,16 +1262,16 @@ function loop(now){
         pl.best=Math.max(pl.best,pl.score);
         if(ev.pass){pl.hold+=dt;pl.fail=0;pl.sum+=ev.s*dt;pl.n+=dt}else{pl.fail+=dt;if(pl.fail<.4&&pl.hold>0)pl.hold+=dt}
         // 소리: 유지가 시작되면 한 번 칭찬, 1초마다 똑딱
-        const holding=pl.hold>0&&pl.fail<.4,sec=Math.ceil(CFG.hold-pl.hold);
-        if(holding&&!pl.wasHold){beep(988,.1,.12);if(!group())speak('좋아요, 그대로')}
+        const holding=pl.hold>0&&pl.fail<.4,sec=Math.ceil(HOLD()-pl.hold);
+        if(holding&&!pl.wasHold&&!courseOf(CFG.course).fast){beep(988,.1,.12);if(!group())speak('좋아요, 그대로')}
         pl.wasHold=holding;
-        if(holding&&pl.tick!=null&&sec<pl.tick&&sec>0&&now-SND.beepT>150){beep(sec<=3?880:740,.09,.13);SND.beepT=now}
+        if(holding&&!courseOf(CFG.course).fast&&pl.tick!=null&&sec<pl.tick&&sec>0&&now-SND.beepT>150){beep(sec<=3?880:740,.09,.13);SND.beepT=now}
         pl.tick=holding?sec:null;
-        if(pl.hold>=CFG.hold){pl.done=true;chime();speak(group()?`${id}번 성공!`:'성공!',true);const avg=pl.n?pl.sum/pl.n:pl.score;rec(id,{ok:true,score:avg,stars:avg>=.9?3:avg>=.82?2:1});renderSeq()}
+        if(pl.hold>=HOLD()){pl.done=true;chime();if(!courseOf(CFG.course).fast)speak(group()?`${id}번 성공!`:'성공!',true);const avg=pl.n?pl.sum/pl.n:pl.score;rec(id,{ok:true,score:avg,stars:avg>=.9?3:avg>=.82?2:1});renderSeq()}
       }
       const pres=Object.values(S.pl).filter(p=>p.tracked||p.done);
-      if(pres.length&&pres.every(p=>p.done))finish();else if(CFG.limit&&S.pt>=CFG.limit)finish();
-    }else if(S.phase==='done'){S.pt+=dt;if(S.pt>=2.6){if(S.idx<POSES.length-1){S.phase='ready';go(S.idx+1)}else summary()}}
+      if(pres.length&&pres.every(p=>p.done))finish();else if(LIMIT()&&S.pt>=LIMIT())finish();
+    }else if(S.phase==='done'){S.pt+=dt;if(S.pt>=AFTER()){if(S.idx<POSES.length-1){S.phase='ready';go(S.idx+1)}else summary()}}
     drawFigure(S.phase==='paused'?0:dt);drawMirror();hud(raw);
   }catch(err){console.error(err)}
   requestAnimationFrame(loop);
