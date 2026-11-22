@@ -8,6 +8,10 @@
 <meta name="apple-mobile-web-app-title" content="미러 요가">
 <meta name="theme-color" content="#eef3f7">
 <title>미러 요가</title>
+<!-- 홈 화면 아이콘: 시안 1 (연하늘 + 남색 글씨). 다른 시안은 icons/icon-*-1024.png -->
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 /* VOICE: 맑고 조용한 요가 강사. 행사장 TV에서 3m 떨어져도 읽히는 큰 글씨
@@ -654,6 +658,22 @@ const SUN_FLOW=[sun(1,SUN_UP),sun(2,SUN_FOLD),sun(3,SUN_HALF),sun(4,SUN_PLANK),s
   sun(7,{...SUN_FOLD,name:'태양경배 · 다시 숙이기',steps:['발을 손 쪽으로 걸어와요','숨을 내쉬며 앞으로 숙여요','머리와 목은 툭 떨어뜨려요']}),
   sun(8,{...SUN_UP,name:'태양경배 · 일어나 마무리',steps:['숨을 들이마시며 천천히 일어나요','두 팔을 머리 위로 쭉','숨을 내쉬며 손을 가슴 앞으로, 끝!']})];
 LYING.push(...SUN_FLOW);
+// 허리 풀기 동작 (정면 옆구리 굽히기 + 옆모습 숙이기)
+const WAIST_HIP={name:'손 허리 옆으로 굽히기',en:'Standing side bend',sub:'허리 옆 늘리기',lv:1,asym:true,
+  p:{tilt:22,nk:0,L:{ua:35,fa:-55,th:6,sh:6},R:{ua:35,fa:-55,th:6,sh:6}},
+  steps:['발을 골반 너비로 벌리고 손은 허리에','숨을 내쉬며 상체를 옆으로 천천히 굽혀요','골반은 그대로, 허리 옆이 늘어나게'],
+  chk:{tilt:[7,2],knL:[15,.6],knR:[15,.6],elL:[30,.4],elR:[30,.4]},
+  err:{tilt:6}};
+const WAIST_REACH={name:'한 팔 넘겨 옆구리 늘리기',en:'Overhead side reach',sub:'허리부터 손끝까지',lv:1,asym:true,
+  p:{tilt:24,nk:0,L:{ua:205,fa:215,th:6,sh:6},R:{ua:10,fa:8,th:6,sh:6}},
+  steps:['한 팔을 머리 위로 올려요','올린 팔을 반대쪽으로 넘기며 상체를 옆으로 굽혀요','아래 팔은 다리를 따라 툭 내려요'],
+  chk:{tilt:[7,1.8],shL:[22,1],elL:[25,.5],knL:[15,.5],knR:[15,.5]},
+  err:{tilt:5,L:{ua:170,fa:172}}};
+const WAIST_HALF={...SUN_HALF,profile:true,lv:1,name:'반만 숙여 허리 펴기',en:'Flat back',sub:'몸 옆면이 카메라를 보게',
+  steps:['카메라에 몸 옆면을 보이고 서요','엉덩이를 뒤로 빼며 상체를 반만 숙여요','손은 허벅지에, 등은 바닥과 나란히 길게']};
+const WAIST_FOLD={...SUN_FOLD,profile:true,lv:1,name:'앞으로 숙여 허리 풀기',en:'Forward fold',sub:'몸 옆면이 카메라를 보게',
+  steps:['카메라에 몸 옆면을 보이고 서요','무릎을 살짝 굽히고 상체를 툭 떨어뜨려요','고개와 팔에 힘을 빼고 천천히 숨 쉬어요']};
+NECK.push(WAIST_HIP,WAIST_REACH,WAIST_HALF,WAIST_FOLD);
 // 아이와 함께: 이미 검증한 동작에 동물 이름과 쉬운 말 설명을 붙인 과정
 const KIDS=[
  {...BASIC[0],name:'키 큰 기린',en:'Giraffe',sub:'목을 길게, 팔은 하늘로',lv:1,
@@ -682,7 +702,7 @@ const KIDS=[
 const COURSES=[
  {id:'basic',name:'기초 스트레칭',sub:'온몸 가볍게',poses:BASIC},
  {id:'kids',name:'동물 친구 요가',sub:'아이와 함께 재밌게',poses:KIDS},
- {id:'neck',name:'목·어깨 풀기',sub:'굳은 목과 어깨',poses:NECK},
+ {id:'neck',name:'목·어깨·허리 풀기',sub:'굳은 목, 어깨, 허리',poses:NECK},
  {id:'legs',name:'하체 스트레칭',sub:'다리와 골반',poses:LEGS},
  {id:'challenge',name:'도전! 전신 균형',sub:'조금 어려운 동작',poses:CHALLENGE},
  {id:'lying',name:'누워서 하기',sub:'바닥에서 천천히 · 태양경배',solo:true,poses:LYING}
