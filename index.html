@@ -42,8 +42,10 @@ button{font:inherit;color:inherit}
 .ibtn:hover{background:#f3f7fa}
 .ibtn svg{width:20px;height:20px}
 .mode{height:46px;display:flex;align-items:center;gap:8px;padding:0 16px;border-radius:99px;border:1px solid var(--line);background:var(--card);cursor:pointer;white-space:nowrap;font-size:14px;font-weight:600}
-.mode i{width:9px;height:9px;border-radius:50%;background:var(--mute)}
-.mode.cam i{background:var(--bad)}.mode.demo{background:var(--acc);border-color:var(--acc);color:#fff}.mode.demo i{background:#fff}
+.mode svg{width:20px;height:20px;flex:none}
+.mode.demo{background:var(--acc);border-color:var(--acc);color:#fff}
+.ibtn .lb{display:none}
+@media (min-width:1100px){.ibtn.lab{width:auto;padding:0 16px;border-radius:99px;display:flex;gap:7px;font-size:14px;font-weight:600}.ibtn.lab .lb{display:inline}}
 .stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(10px,1.1vw,18px);padding:0 clamp(14px,2vw,28px);min-height:0}
 .grp .stage{grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr)}
 .panel{position:relative;border-radius:32px;overflow:hidden;min-height:0}
@@ -112,11 +114,12 @@ button{font:inherit;color:inherit}
 .lettering{width:clamp(170px,15vw,230px);height:auto;color:var(--ink);overflow:visible;margin:0 0 4px -4px}
 .icard h1{font-size:clamp(24px,2vw,34px);line-height:1.15}
 .icard p{margin:0;color:var(--mute);font-size:clamp(15px,1.05vw,18px);text-wrap:pretty}
-.course{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.course{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px}
 .crs{display:grid;justify-items:center;align-content:start;gap:2px;padding:10px 6px 12px;border-radius:20px;border:1px solid #fff;background:rgba(255,255,255,.7);cursor:pointer;text-align:center;color:var(--ink)}
 .crs svg{width:46px;height:46px}
 .crs b{font-size:15px;font-weight:700;letter-spacing:-.02em;word-break:keep-all}
 .crs span{font-size:12px;color:var(--mute);word-break:keep-all}
+.crs em{font-style:normal;font-size:11px;font-weight:700;color:var(--acc);background:#eaf2f9;border-radius:99px;padding:1px 8px;margin-top:2px}
 .crs[aria-pressed=true]{background:#fff;border-color:var(--acc);box-shadow:0 0 0 1.5px var(--acc),0 6px 16px rgba(91,142,194,.18)}
 .tips{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .tips li{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:center;background:rgba(255,255,255,.75);border:1px solid #fff;border-radius:18px;padding:10px 14px;font-size:clamp(15px,1vw,17px)}
@@ -185,7 +188,8 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
 }
 @media (max-width:600px){
  .top{flex-wrap:wrap}.prog{order:3;flex-basis:100%;justify-content:flex-start}
- .mode span{display:none}.mode{padding:0 14px}.mode.demo span{display:inline}
+ .mode{padding:0 11px;gap:4px;height:42px;font-size:13px}.ibtn{width:42px;height:42px}.tools{gap:6px;margin-left:auto}#fsBtn{display:none}.top{gap:8px}
+ .live .brand .word,.live .brand small{display:none}
  .ring{width:78px}.say{font-size:18px;padding:10px 14px}.hold{font-size:13px}
  .group{grid-template-columns:repeat(2,minmax(0,1fr))}.pcard{padding:8px 10px;gap:8px}.pa{min-width:2.2em}
  .center{padding:64px 12px 16px}.ctrl .btn{min-width:0;flex:1}
@@ -211,7 +215,7 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
  .mirror .intro{position:absolute}
  .mirror:has(.intro:not([hidden])) .view{display:block}
  .intro{place-items:start center;padding:14px}
- .crs svg{display:none}.crs{padding:8px 4px}.crs b{font-size:14px}.crs span{display:none}
+ .crs svg,.crs em{display:none}.crs{padding:8px 4px}.crs b{font-size:13px}.crs span{display:none}.course{grid-template-columns:repeat(auto-fit,minmax(96px,1fr))}
  .lettering{width:104px}.icard{gap:8px}.icard h1{font-size:20px}.icard p{font-size:13px}.tips{display:none}.btn{min-height:44px}
  .hud-bot{padding:6px 8px}.say{font-size:17px;padding:6px 12px;min-height:0}.hold{font-size:12px}.solo{gap:4px}
  .hud-top{left:8px;right:8px;top:8px}.tag{font-size:12px;padding:4px 10px}
@@ -258,10 +262,11 @@ select{font:inherit;font-size:16px;min-height:44px;width:100%;border-radius:14px
   <div class="prog"><div class="dots" id="dots"></div><span class="now" id="now"></span></div>
   <div class="clock" id="clock"></div>
   <div class="tools">
-   <button class="mode" id="modeBtn" type="button" title="시작 방법 다시 고르기"><i></i><span>대기 중</span></button>
-   <button class="ibtn" id="sndBtn" type="button" aria-label="소리 끄기" title="소리 켜기·끄기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><g id="sndOn"><path d="M15.5 9a4.2 4.2 0 0 1 0 6"/><path d="M18.3 6.5a8 8 0 0 1 0 11"/></g><g id="sndOff" hidden><path d="M16 9.5l5 5M21 9.5l-5 5"/></g></svg></button>
-   <button class="ibtn" id="setBtn" type="button" aria-label="설정" title="설정"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle cx="16" cy="7" r="2.6"/><circle cx="10" cy="17" r="2.6"/></svg></button>
-   <button class="ibtn" id="fsBtn" type="button" aria-label="전체 화면" title="전체 화면 (F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
+   <button class="mode home" id="homeBtn" type="button" title="과정 고르는 처음 화면으로" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5L12 5l8 6.5"/><path d="M6.5 10v9h11v-9"/></svg><span>처음으로</span></button>
+   <button class="mode demo" id="modeBtn" type="button" title="데모를 끝내고 카메라로 하기" hidden><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM16 10.5l5-3v9l-5-3z"/></svg><span>카메라 켜기</span></button>
+   <button class="ibtn lab" id="sndBtn" type="button" aria-label="소리 끄기" title="소리 켜기·끄기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><g id="sndOn"><path d="M15.5 9a4.2 4.2 0 0 1 0 6"/><path d="M18.3 6.5a8 8 0 0 1 0 11"/></g><g id="sndOff" hidden><path d="M16 9.5l5 5M21 9.5l-5 5"/></g></svg><span class="lb">소리</span></button>
+   <button class="ibtn lab" id="setBtn" type="button" aria-label="설정" title="설정"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle cx="16" cy="7" r="2.6"/><circle cx="10" cy="17" r="2.6"/></svg><span class="lb">설정</span></button>
+   <button class="ibtn lab" id="fsBtn" type="button" aria-label="전체 화면" title="전체 화면 (F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg><span class="lb">전체 화면</span></button>
   </div>
  </header>
 
@@ -390,7 +395,10 @@ function fk(p){
     j[s+'El']=add(j[s+'Sh'],dir(g*q.ua),B.ua);j[s+'Wr']=add(j[s+'El'],dir(g*q.fa),B.fa);j[s+'Hd']=add(j[s+'Wr'],dir(g*q.fa),.045);
     j[s+'Kn']=add(j[s+'Hp'],dir(g*q.th),B.th);j[s+'An']=add(j[s+'Kn'],dir(g*q.sh),B.sh);j[s+'Ft']=add(j[s+'An'],dir(g*q.sh),B.ak);
   }
-  const low=Math.max(j.lFt[1],j.rFt[1]);
+  // 전신 회전(rot, 도): 옆으로 누운 자세는 선 자세를 통째로 돌려서 만든다
+  if(p.rot){const r=p.rot*Math.PI/180,c=Math.cos(r),sn=Math.sin(r);for(const k in j){const[x,y]=j[k];j[k]=[x*c-y*sn,x*sn+y*c]}}
+  let low=-1e9;for(const k in j)low=Math.max(low,j[k][1]+(k==='head'?B.hd:0));
+  if(!p.rot)low=Math.max(j.lFt[1],j.rFt[1]);
   for(const k in j)j[k]=[j[k][0],j[k][1]-low];
   return j;
 }
@@ -408,7 +416,7 @@ function feats(j){
 }
 
 /* ── 자세 목록: p = 목표 각도, chk = 판정 항목 [허용오차, 가중치], err = 데모에서 일부러 틀리는 모습 ── */
-const NEUTRAL={tilt:0,nk:0,L:{ua:7,fa:5,th:2,sh:1},R:{ua:7,fa:5,th:2,sh:1}};
+const NEUTRAL={tilt:0,nk:0,rot:0,L:{ua:7,fa:5,th:2,sh:1},R:{ua:7,fa:5,th:2,sh:1}};
 const BASIC=[
  {name:'두 팔 올린 산 자세',en:'Urdhva Hastasana',sub:'하늘로 쭉 기지개',lv:1,asym:false,
   p:{tilt:0,L:{ua:174,fa:177,th:2,sh:1},R:{ua:174,fa:177,th:2,sh:1}},
@@ -441,34 +449,40 @@ const BASIC=[
   chk:{knR:[30,1.6],hpR:[25,1.2],knL:[15,1],anL:[12,.6],shL:[25,.8],shR:[25,.8],elL:[30,.5],elR:[30,.5],tilt:[10,.6],pelvis:[8,.9]},
   err:{R:{th:18,sh:-40}}}
 ];
-const GODDESS=BASIC[4],WARRIOR=BASIC[3];
+const GODDESS=BASIC[4],WARRIOR=BASIC[3],TREE=BASIC[5];
+const ST={th:2,sh:1};
 const NECK=[
  {name:'목 옆으로 기울이기',en:'Neck side stretch',sub:'귀를 어깨 쪽으로',lv:1,asym:true,
-  p:{tilt:0,nk:32,L:{ua:9,fa:7,th:2,sh:1},R:{ua:9,fa:7,th:2,sh:1}},
+  p:{tilt:0,nk:32,L:{ua:9,fa:7,...ST},R:{ua:9,fa:7,...ST}},
   steps:['바르게 서서 어깨 힘을 빼요','숨을 내쉬며 귀를 어깨 쪽으로 천천히 기울여요','어깨는 올라가지 않게, 반대쪽 목이 늘어나게'],
   chk:{nk:[9,2.2],tilt:[7,1],shL:[22,.5],shR:[22,.5],elL:[25,.3],elR:[25,.3],knL:[15,.4],knR:[15,.4]},
   err:{nk:10}},
- {name:'팔 옆으로 쭉',en:'T-arm stretch',sub:'어깨 높이로 활짝',lv:1,asym:false,
-  p:{tilt:0,nk:0,L:{ua:90,fa:90,th:2,sh:1},R:{ua:90,fa:90,th:2,sh:1}},
-  steps:['발을 모으고 바르게 서요','두 팔을 옆으로 어깨 높이까지 쭉 펴요','손끝은 멀리, 어깨는 아래로'],
-  chk:{shL:[15,1.3],shR:[15,1.3],elL:[18,1],elR:[18,1],tilt:[7,.6],nk:[10,.4]},
-  err:{R:{ua:58,fa:52}}},
+ {name:'한 팔 뻗고 고개 반대로',en:'Side reach & neck',sub:'옆구리부터 목까지',lv:2,asym:true,
+  p:{tilt:0,nk:24,L:{ua:176,fa:178,...ST},R:{ua:12,fa:10,...ST}},
+  steps:['한쪽 팔을 머리 위로 쭉 뻗어요','고개는 반대쪽 어깨로 천천히 기울여요','올린 팔 옆구리부터 목까지 길게'],
+  chk:{shL:[22,1.2],elL:[25,.8],shR:[22,.6],nk:[10,1.6],tilt:[8,.8],knL:[15,.3],knR:[15,.3]},
+  err:{nk:4,L:{ua:132,fa:140}}},
  {name:'선인장 팔',en:'Cactus arms',sub:'가슴 활짝 열기',lv:1,asym:false,
-  p:{tilt:0,nk:0,L:{ua:90,fa:180,th:2,sh:1},R:{ua:90,fa:180,th:2,sh:1}},
+  p:{tilt:0,nk:0,L:{ua:90,fa:180,...ST},R:{ua:90,fa:180,...ST}},
   steps:['두 팔을 옆으로 어깨 높이까지 올려요','팔꿈치를 90도로 굽혀 손끝이 하늘을 향하게','가슴을 열고 날개뼈를 살짝 모아요'],
   chk:{shL:[18,1.1],shR:[18,1.1],elL:[20,1.2],elR:[20,1.2],tilt:[7,.6],nk:[10,.3]},
   err:{L:{fa:125},R:{fa:130}}},
  {name:'W자 팔',en:'W arms',sub:'날개뼈 모으기',lv:2,asym:false,
-  p:{tilt:0,nk:0,L:{ua:38,fa:160,th:2,sh:1},R:{ua:38,fa:160,th:2,sh:1}},
+  p:{tilt:0,nk:0,L:{ua:38,fa:160,...ST},R:{ua:38,fa:160,...ST}},
   steps:['팔꿈치를 옆구리 가까이 내려요','손을 어깨 옆으로 올려 W 모양을 만들어요','날개뼈를 아래로 모으며 가슴을 펴요'],
   chk:{shL:[15,1],shR:[15,1],elL:[20,1.2],elR:[20,1.2],tilt:[7,.6],nk:[10,.3]},
   err:{L:{ua:30,fa:92},R:{ua:30,fa:96}}},
- {name:'한 팔 뻗고 고개 반대로',en:'Side reach & neck',sub:'옆구리부터 목까지',lv:2,asym:true,
-  p:{tilt:0,nk:24,L:{ua:176,fa:178,th:2,sh:1},R:{ua:12,fa:10,th:2,sh:1}},
-  steps:['한쪽 팔을 머리 위로 쭉 뻗어요','고개는 반대쪽 어깨로 천천히 기울여요','올린 팔 옆구리부터 목까지 길게'],
-  chk:{shL:[22,1.2],elL:[25,.8],shR:[22,.6],nk:[10,1.6],tilt:[8,.8],knL:[15,.3],knR:[15,.3]},
-  err:{nk:4,L:{ua:132,fa:140}}}
+ {name:'Y자 팔',en:'Y arms',sub:'어깨 위로 활짝',lv:1,asym:false,
+  p:{tilt:0,nk:0,L:{ua:145,fa:145,...ST},R:{ua:145,fa:145,...ST}},
+  steps:['발을 모으고 바르게 서요','두 팔을 비스듬히 위로 뻗어 Y 모양을 만들어요','어깨는 귀에서 멀리, 가슴은 위로'],
+  chk:{shL:[15,1.3],shR:[15,1.3],elL:[18,1],elR:[18,1],tilt:[7,.6],nk:[10,.3]},
+  err:{L:{ua:108,fa:108}}}
 ];
+const OPENHIP={name:'무릎 옆으로 들고 균형',en:'Open hip balance',sub:'한 발로 서서 골반 열기',lv:3,asym:true,
+  p:{tilt:0,nk:0,L:{ua:90,fa:90,th:-1,sh:-1},R:{ua:90,fa:90,th:85,sh:-5}},
+  steps:['두 팔을 옆으로 펴서 균형을 잡아요','한쪽 무릎을 옆으로 들어 올려요 (허벅지가 바닥과 나란히)','서 있는 다리는 쭉, 상체는 똑바로'],
+  chk:{hpR:[15,1.4],knR:[20,1.2],knL:[15,1],shL:[20,.6],shR:[20,.6],tilt:[9,.7]},
+  err:{R:{th:50,sh:20}}};
 const LEGS=[
  {name:'손 허리 넓게 서기',en:'Wide stance',sub:'다리 넓게 버티기',lv:1,asym:false,
   p:{tilt:0,nk:0,L:{ua:35,fa:-55,th:22,sh:22},R:{ua:35,fa:-55,th:22,sh:22}},
@@ -485,23 +499,64 @@ const LEGS=[
   steps:['두 팔을 옆으로 펴서 균형을 잡아요','한쪽 다리를 옆으로 천천히 들어 올려요','들어 올린 다리 무릎은 쭉, 상체는 똑바로'],
   chk:{hpR:[12,1.5],knR:[15,.9],knL:[15,.9],shL:[20,.5],shR:[20,.5],tilt:[9,.7]},
   err:{R:{th:14,sh:14}}},
- GODDESS,WARRIOR
+ GODDESS,OPENHIP
+];
+const CHALLENGE=[
+ {name:'삼각 자세',en:'Trikonasana',sub:'옆구리와 다리 뒤쪽 늘리기',lv:2,asym:true,
+  p:{tilt:65,nk:0,L:{ua:180,fa:180,th:30,sh:30},R:{ua:0,fa:0,th:30,sh:30}},
+  steps:['다리를 넓게 벌리고 무릎을 쭉 펴요','상체를 옆으로 길게 기울여 아래 손을 정강이에','위쪽 팔은 하늘로, 두 팔이 한 줄이 되게'],
+  chk:{tilt:[10,2],shL:[20,.8],shR:[20,.8],elL:[20,.6],elR:[20,.6],knL:[15,1],knR:[15,1],stance:[.8,1]},
+  err:{tilt:35}},
+ {name:'옆구리 늘리기 런지',en:'Utthita Parsvakonasana',sub:'무릎 굽혀 비스듬히',lv:3,asym:true,
+  p:{tilt:55,nk:0,L:{ua:235,fa:235,th:52,sh:52},R:{ua:0,fa:0,th:76,sh:5}},
+  steps:['전사 자세 2처럼 한쪽 무릎을 90도 가까이 굽혀요','상체를 그 무릎 쪽으로 기울여 아래 손을 바닥 가까이','위쪽 팔은 귀 옆으로, 발끝부터 손끝까지 한 줄로'],
+  chk:{tilt:[10,1.6],knR:[18,1.6],knL:[15,1],shL:[22,1],elL:[22,.6],anR:[12,.8],stance:[.8,.8]},
+  err:{tilt:30,R:{th:60,sh:25}}},
+ {name:'반달 자세',en:'Ardha Chandrasana',sub:'한 발로 옆으로 눕듯이',lv:3,asym:true,
+  p:{tilt:0,nk:0,rot:-90,L:{ua:90,fa:90,th:90,sh:90},R:{ua:90,fa:90,th:2,sh:2}},
+  steps:['삼각 자세에서 앞 무릎을 살짝 굽혀요','뒷다리를 들어 바닥과 나란히, 서 있는 다리는 쭉','두 팔은 위아래로 한 줄, 몸은 카메라 쪽을 보게'],
+  chk:{hpL:[15,1.4],hpR:[15,1.2],knL:[15,.8],knR:[15,.8],shL:[22,.7],shR:[22,.7],elL:[20,.4],elR:[20,.4],tilt:[15,1]},
+  err:{R:{th:32,sh:32}}},
+ WARRIOR,TREE
+];
+const LYING=[
+ {name:'옆으로 누워 다리 들기',en:'Side-lying leg raise',sub:'엉덩이 옆 근육',lv:1,asym:true,
+  p:{tilt:0,nk:0,rot:-90,L:{ua:175,fa:175,...ST},R:{ua:20,fa:10,th:40,sh:40}},
+  steps:['카메라를 바닥 가까이 두고, 얼굴이 카메라를 보게 옆으로 누워요','아래 팔은 머리 밑으로 쭉, 두 다리는 곧게 포개요','위쪽 다리를 무릎을 편 채로 천천히 들어 올려요'],
+  chk:{hpR:[12,1.6],knR:[15,.8],knL:[15,.6],hpL:[15,.6],tilt:[20,.8]},
+  err:{R:{th:15,sh:15}}},
+ {name:'옆으로 누워 팔다리 들기',en:'Side-lying star',sub:'옆구리와 엉덩이 함께',lv:2,asym:true,
+  p:{tilt:0,nk:0,rot:-90,L:{ua:175,fa:175,...ST},R:{ua:120,fa:120,th:35,sh:35}},
+  steps:['옆으로 누워 아래 팔은 머리 밑으로 쭉 뻗어요','위쪽 팔과 위쪽 다리를 함께 들어 올려요','별 모양처럼 팔다리를 멀리 보내요'],
+  chk:{shR:[20,1.2],elR:[25,.5],hpR:[12,1.4],knR:[15,.7],knL:[15,.5],tilt:[20,.8]},
+  err:{R:{ua:60,fa:60}}},
+ {name:'사이드 플랭크',en:'Side plank',sub:'손 하나로 몸 버티기',lv:3,asym:true,
+  p:{tilt:0,nk:0,rot:-62,L:{ua:62,fa:62,...ST},R:{ua:118,fa:118,...ST}},
+  steps:['옆으로 누워 아래 손을 어깨 바로 밑 바닥에 짚어요','엉덩이를 들어 머리부터 발까지 한 줄로','위쪽 팔은 하늘로 쭉 뻗어요 (힘들면 무릎을 바닥에)'],
+  chk:{hpL:[12,1.4],hpR:[12,1.2],knL:[15,.8],knR:[15,.8],elL:[18,1],shL:[18,1.2],shR:[22,.8],tilt:[12,1]},
+  err:{rot:-76}}
 ];
 const COURSES=[
  {id:'basic',name:'기초 스트레칭',sub:'온몸 가볍게',poses:BASIC},
  {id:'neck',name:'목·어깨 풀기',sub:'굳은 목과 어깨',poses:NECK},
- {id:'legs',name:'하체 스트레칭',sub:'다리와 골반',poses:LEGS}
+ {id:'legs',name:'하체 스트레칭',sub:'다리와 골반',poses:LEGS},
+ {id:'challenge',name:'도전! 전신 균형',sub:'조금 어려운 동작',poses:CHALLENGE},
+ {id:'lying',name:'누워서 하기',sub:'바닥에서 천천히',solo:true,poses:LYING}
 ];
 const POSES=[];
-const mirrorP=p=>({tilt:-p.tilt,nk:-(p.nk||0),L:{...p.R},R:{...p.L}});
+const mirrorP=p=>({tilt:-p.tilt,nk:-(p.nk||0),rot:-(p.rot||0),L:{...p.R},R:{...p.L}});
 const mirrorK=k=>/[LR]$/.test(k)?k.slice(0,-1)+(k.endsWith('L')?'R':'L'):k;
-const merge=(p,e)=>({tilt:e.tilt??p.tilt,nk:e.nk??p.nk??0,L:{...p.L,...(e.L||{})},R:{...p.R,...(e.R||{})}});
-const flat=p=>[p.tilt,p.L.ua,p.L.fa,p.L.th,p.L.sh,p.R.ua,p.R.fa,p.R.th,p.R.sh,p.nk||0];
-const unflat=a=>({tilt:a[0],nk:a[9],L:{ua:a[1],fa:a[2],th:a[3],sh:a[4]},R:{ua:a[5],fa:a[6],th:a[7],sh:a[8]}});
+const merge=(p,e)=>({tilt:e.tilt??p.tilt,nk:e.nk??p.nk??0,rot:e.rot??p.rot??0,L:{...p.L,...(e.L||{})},R:{...p.R,...(e.R||{})}});
+const flat=p=>[p.tilt,p.L.ua,p.L.fa,p.L.th,p.L.sh,p.R.ua,p.R.fa,p.R.th,p.R.sh,p.nk||0,p.rot||0];
+const unflat=a=>({tilt:a[0],nk:a[9],rot:a[10],L:{ua:a[1],fa:a[2],th:a[3],sh:a[4]},R:{ua:a[5],fa:a[6],th:a[7],sh:a[8]}});
 const lerpP=(a,b,t)=>{const x=flat(a),y=flat(b);return unflat(x.map((v,i)=>v+(y[i]-v)*t))};
 const ease=t=>t<.5?2*t*t:1-((-2*t+2)**2)/2;
 // v[0] = 그림 그대로, v[1] = 좌우 반대 (판정 항목의 왼/오른쪽도 함께 바뀜)
 [...new Set(COURSES.flatMap(c=>c.poses))].forEach(P=>{P.v=[{p:P.p,chk:P.chk},{p:mirrorP(P.p),chk:Object.fromEntries(Object.entries(P.chk).map(([k,v])=>[mirrorK(k),v]))}].map(o=>{const j=fk(o.p);return{...o,j,t:feats(j)}})});
+// 한쪽으로 하는 동작은 '한쪽 → 반대쪽' 두 단계로 펼친다 (반대쪽은 좌우를 뒤집은 목표)
+const flipErr=e=>e&&{...e,tilt:e.tilt==null?undefined:-e.tilt,nk:e.nk==null?undefined:-e.nk,rot:e.rot==null?undefined:-e.rot,L:e.R,R:e.L};
+const halfOf=(P,k)=>({...P,asym:false,half:k?'반대쪽':'한쪽 먼저',name:k?P.name+' · 반대쪽':P.name,p:P.v[k].p,v:[P.v[k]],err:k?flipErr(P.err):P.err});
+COURSES.forEach(c=>{c.poses=c.poses.flatMap(P=>P.asym?[halfOf(P,0),halfOf(P,1)]:[P])});
 
 /* ── 설정 ── */
 // 난이도: 몇 점 이상이면 통과로 볼지 (m = 관절 각도 허용 오차 배율)
@@ -520,7 +575,8 @@ const SETS=[['course','과정',COURSES.map(c=>[c.id,c.name]),'과정을 바꾸�
  ['dev','처리 방식',[['GPU','GPU'],['CPU','CPU']],'아이패드 등에서 뼈대가 엉뚱하게 그려지면 CPU로 바꿔 보세요.'],
  ['sound','소리',[['all','음성 안내 + 효과음'],['fx','효과음만'],['off','끄기']],'자세 이름, 고칠 곳, 3·2·1 카운트를 소리로 알려 줘요. 아이폰은 무음 모드를 꺼야 들려요.'],
  ['bones','뼈대 선',[[true,'보이기'],[false,'숨기기']],'']];
-const group=()=>CFG.people>1;
+// '누워서 하기'처럼 혼자 하는 과정은 인원 설정과 상관없이 한 명만 채점
+const group=()=>CFG.people>1&&!courseOf(CFG.course).solo;
 
 /* ── 상태: 사람마다(pl) 따로, 결과는 res[자세][번호] ── */
 const S={mode:null,phase:'intro',back:'ready',idx:0,pt:0,figT:0,loopT:0,figVi:0,res:[],tracks:[],pl:{},marks:[],crop:null,demo:null,speed:1,auto:false,
@@ -616,6 +672,8 @@ function plMsg(pl,short){
   if(!pl.seen)return[pl.say,pl.sayCol];
   if(pl.why)return[pl.why==='far'?L2(short,'전신이 보이도록 뒤로 물러나 주세요','전신이 보이게'):pl.why==='small'?L2(short,'한 걸음 앞으로 와 주세요','앞으로'):L2(short,'화면 가운데로 와 주세요','가운데로'),COL.mid];
   const ev=pl.ev;if(!ev)return[pl.say,pl.sayCol];
+  // 통과 점수를 넘어 카운트가 도는 중에는 작은 교정 대신 칭찬만
+  if(ev.pass)return[pl.hold>.3?L2(short,'좋아요! 그대로 유지하세요','좋아요! 유지'):'좋아요!',COL.ok];
   const k=worst(ev);if(k)return[cue(k,ev.per[k].d,ev.f,ev.t,short),COL[st(ev.per[k].e)]];
   return[pl.hold>.3?L2(short,'좋아요! 그대로 유지하세요','좋아요! 유지'):'좋아요!',COL.ok];
 }
@@ -664,8 +722,8 @@ function vis(j){
   for(const k of KEY){const p=j[k];if(p[2]<.5||p[1]<c.y0||p[1]>c.y1)far=true;else if(p[0]<c.x0||p[0]>c.x1)side=true}
   if(far)return'far';if(side)return'side';
   // 화면 높이의 28%보다 작게 찍히면(멀리 선 아이 등) 관절 위치가 부정확하다
-  const top=Math.min(j.nose[1],j.lSh[1],j.rSh[1]),bot=Math.max(j.lAn[1],j.rAn[1]);
-  return bot-top<(c.y1-c.y0)*.28?'small':'';
+  const P=[j.nose,j.lSh,j.rSh,j.lAn,j.rAn,j.lWr,j.rWr],xs=P.map(q=>q[0]),ys=P.map(q=>q[1]);
+  return Math.max(Math.max(...xs)-Math.min(...xs),Math.max(...ys)-Math.min(...ys))<(c.y1-c.y0)*.3?'small':'';
 }
 function loadScript(src){return new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.crossOrigin='anonymous';s.onload=ok;s.onerror=()=>no(new Error('script'));document.head.appendChild(s)})}
 async function loadModel(){
@@ -728,7 +786,7 @@ function demoTracks(){
     const t=S.pt,c=3.6+[0,1.5,3][i];let p=NEUTRAL;
     if(ph==='active')p=t<1.3?lerpP(NEUTRAL,err,ease(t/1.3)):t<c?err:t<c+1.2?lerpP(err,tgt,ease((t-c)/1.2)):tgt;
     else if(ph==='done')p=tgt;
-    const a=flat(p).map((v,k)=>v+Math.sin(w*(1.1+k*.37)+k+i*2.1)*(k?1.5:.7));
+    const a=flat(p).map((v,k)=>k===10?v:v+Math.sin(w*(1.1+k*.37)+k+i*2.1)*(k?1.5:.7));
     const j=fk(unflat(a)),o={};for(const k in j)o[k]=[x+j[k][0]*ds,DG+j[k][1]*ds,1];o.nose=o.head;
     return{id:i+1,J:o,lost:0};
   });
@@ -785,7 +843,7 @@ function arrowsFor(k,J,ev,tj){
   if(RJ[k]){
     const[pv,rf,en]=RJ[k];
     // 발이 바닥에 붙은 다리의 무릎은 '엉덩이를 내리기/올리기'로 보여 준다
-    if(k[0]==='k'&&J[en][1]>floor-.35*sw)return[lineA(mid(J.lHp,J.rHp),[0,d>0?1:-1],sw*.85)];
+    if(k[0]==='k'&&Math.abs(ev.f.tilt)<45&&J[en][1]>floor-.35*sw)return[lineA(mid(J.lHp,J.rHp),[0,d>0?1:-1],sw*.85)];
     return[arcA(J[pv],J[en],wrap(sang(sub(tj[rf],tj[pv]),sub(tj[en],tj[pv]))-sang(sub(J[rf],J[pv]),sub(J[en],J[pv]))),1.3)];
   }
   if(k==='stance'){const o=d<0?1:-1;return[lineA(J.lAn,[-o,0],sw*.7),lineA(J.rAn,[o,0],sw*.7)]}
@@ -910,7 +968,7 @@ function renderPose(){
   const P=POSES[S.idx];
   $('pName').textContent=P.name;$('pSub').textContent=P.en+' · '+P.sub;
   $('pSteps').innerHTML=P.steps.map(s=>`<li>${esc(s)}</li>`).join('');
-  $('chips').innerHTML=`<span class="chip">${courseOf(CFG.course).name} ${S.idx+1} / ${POSES.length}</span><span class="chip">난이도 ${lvTxt(P.lv)}</span>${P.asym?'<span class="chip both">양쪽 모두 OK</span>':''}<span class="chip">${LV[CFG.lvl].pt}점 넘으면 ${CFG.hold}초 유지</span>`;
+  $('chips').innerHTML=`<span class="chip">${courseOf(CFG.course).name} ${S.idx+1} / ${POSES.length}</span><span class="chip">난이도 ${lvTxt(P.lv)}</span>${P.half?`<span class="chip both">${P.half}</span>`:''}<span class="chip">${LV[CFG.lvl].pt}점 넘으면 ${CFG.hold}초 유지</span>`;
   renderCourses();
   $('now').textContent=`${S.idx+1} / ${POSES.length} · ${P.name}`;
   $('app').classList.toggle('grp',group());
@@ -984,7 +1042,7 @@ function hud(dt){
   setH($('clock'),ph==='active'&&live?(CFG.limit?`남은 시간 <b>${mmss(CFG.limit-S.pt)}</b>`:`경과 <b>${mmss(S.pt)}</b>`):CFG.limit?`자세당 <b>${CFG.limit}초</b>`:'제한 시간 없음');
   const br=$('breath');br.hidden=!(live&&ph==='active');
   if(!br.hidden)setT($('breathTxt'),RM?'편안하게 숨 쉬어요':Math.floor(S.pt/4)%2?'천천히 내쉬고':'깊게 들이마시고');
-  const mb=$('modeBtn');mb.className='mode'+(S.mode==='camera'?' cam':S.mode==='demo'?' demo':'');setT(mb.lastElementChild,S.mode==='camera'?'카메라':S.mode==='demo'?'카메라 켜기':'대기 중');mb.title=S.mode==='demo'?'데모를 끝내고 카메라로 하기':'시작 방법 다시 고르기';
+  $('modeBtn').hidden=S.mode!=='demo';$('homeBtn').hidden=!S.mode;
 }
 function setPlay(){
   $('playBtn').hidden=!S.mode;
@@ -1050,7 +1108,7 @@ function closeModals(){
   if(S.auto&&S.phase==='paused'){S.phase=S.back;setPlay()}S.auto=false;
 }
 function renderCourses(){
-  setH($('coursePick'),COURSES.map(c=>`<button class="crs" type="button" data-c="${c.id}" aria-pressed="${CFG.course===c.id}">${mini(c.poses[0].p)}<b>${c.name}</b><span>${c.sub} · ${c.poses.length}동작</span></button>`).join(''));
+  setH($('coursePick'),COURSES.map(c=>`<button class="crs" type="button" data-c="${c.id}" aria-pressed="${CFG.course===c.id}">${mini(c.poses[0].p)}<b>${c.name}</b><span>${c.sub} · ${c.poses.length}단계</span>${c.solo?'<em>혼자 하기</em>':''}</button>`).join(''));
 }
 function setCourse(id){
   CFG.course=courseOf(id).id;save();
@@ -1069,7 +1127,10 @@ async function applyModel(){
 $('camBtn').onclick=startCamera;
 $('demoBtn').onclick=()=>begin('demo');
 // 데모 중에 누르면 바로 카메라로 바꾼다. 카메라 중에 누르면 시작 화면으로
-$('modeBtn').onclick=()=>{if(S.mode==='demo'){home();startCamera()}else home()};
+$('modeBtn').onclick=()=>{home();startCamera()};
+$('homeBtn').onclick=()=>{home();if(innerWidth<=900)$('mirror').scrollIntoView({block:'start',behavior:'smooth'})};
+// 아이폰처럼 전체 화면을 못 쓰는 기기에서는 버튼을 숨긴다
+if(!(document.fullscreenEnabled||document.webkitFullscreenEnabled))$('fsBtn').hidden=true;
 $('setBtn').onclick=()=>{renderSettings();openModal('setModal')};
 $('setClose').onclick=closeModals;
 $('sumClose').onclick=closeModals;
