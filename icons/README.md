@@ -10,3 +10,4 @@
 
 홈 화면 아이콘(apple-touch-icon.png 180px, icon-192/512.png, favicon-32.png)은 시안 1에서 만들었습니다.
 iOS 앱으로 만들 때는 원하는 시안의 1024px 파일을 Xcode의 AppIcon에 넣으면 됩니다.
+- icon-6-hills-1024.png: 연하늘 언덕 배경 (책숲과 같은 구도) — 지금 홈 화면 아이콘
