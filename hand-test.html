@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>손동작 인식 데모</title>
+<style>
+:root{--bg:#12262B;--ink:#EAF2F1;--body:#B9CFCC;--mint:#7FD3CC;--line:#2E4A50}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;overflow:hidden}
+.wrap{display:grid;grid-template-columns:1fr 420px;gap:24px;height:100%;padding:24px;box-sizing:border-box}
+.stage{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#0B1A1E;display:flex;align-items:center;justify-content:center}
+video,canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+video{opacity:.85}
+.intro{position:relative;text-align:center;padding:24px}
+.intro h1{font-size:44px;margin:0 0 12px}
+.intro p{font-size:20px;color:var(--body);margin:0 0 24px;line-height:1.6}
+button{font:600 22px inherit;font-family:inherit;padding:16px 32px;border-radius:14px;border:0;background:var(--mint);color:#0B1A1E;cursor:pointer}
+button:disabled{opacity:.4;cursor:default}
+.side{display:flex;flex-direction:column;gap:16px}
+.eyebrow{font:600 15px Consolas,monospace;letter-spacing:3px;color:var(--mint)}
+.card{border:1px solid var(--line);border-radius:14px;padding:22px;background:rgba(255,255,255,.04)}
+#gesture{font-size:56px;font-weight:700;line-height:1.15}
+#meaning{font-size:22px;color:var(--mint);margin-top:8px;min-height:30px}
+#conf,#count,#fps{font:16px Consolas,monospace;color:var(--body)}
+.list{font-size:18px;color:var(--body);line-height:1.9;margin:0;padding-left:20px}
+#status{font-size:16px;color:var(--body)}
+@media (max-width:820px){html,body{overflow:auto}.wrap{grid-template-columns:1fr;grid-template-rows:60vh auto;height:auto}#gesture{font-size:40px}.intro h1{font-size:30px}.intro p{font-size:16px}}
+</style></head><body>
+<div class="wrap">
+  <div class="stage">
+    <video id="video" playsinline muted></video><canvas id="canvas"></canvas>
+    <div class="intro" id="intro"><h1>손동작 인식 데모</h1><p>카메라 하나로 손의 마디 21곳을 실시간으로 찾고<br>손 모양을 알아봅니다. 영상은 이 PC 안에서만 처리돼요.</p><button id="start" disabled>카메라 켜기</button></div>
+  </div>
+  <div class="side">
+    <div class="eyebrow">LITETWIN · 모션 인식</div>
+    <div class="card"><div id="gesture">손을 보여 주세요</div><div id="meaning"></div><div id="conf" style="margin-top:10px"></div></div>
+    <div class="card"><div id="count">손 없음</div><div id="fps" style="margin-top:6px"></div></div>
+    <div class="card"><div class="eyebrow" style="margin-bottom:8px">해 보세요</div>
+      <ul class="list"><li>손바닥 펴기 · 주먹</li><li>엄지 척 · 엄지 아래</li><li>브이(V) · 검지 위로</li><li>양손 동시에</li></ul></div>
+    <div id="status">인식 모델을 준비하는 중…</div>
+  </div>
+</div>
+<script type="module">
+import { FilesetResolver, GestureRecognizer } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
+(async function () {
+  const $ = (id) => document.getElementById(id);
+  const status = $("status");
+  const b64ToBlob = (b64, type) => {
+    const bin = atob(b64); const n = bin.length; const u = new Uint8Array(n);
+    for (let i = 0; i < n; i++) u[i] = bin.charCodeAt(i);
+    return new Blob([u], { type });
+  };
+  const KO = {
+    Open_Palm: "손바닥 펴기", Closed_Fist: "주먹", Pointing_Up: "검지 위로",
+    Thumb_Up: "엄지 척", Thumb_Down: "엄지 아래", Victory: "브이(V)", ILoveYou: "사랑해 손",
+  };
+  const MEANING = {
+    Open_Palm: "→ 예: 멈춤 · 화면 정지", Closed_Fist: "→ 예: 잡기 · 모델 붙잡기", Pointing_Up: "→ 예: 선택",
+    Thumb_Up: "→ 예: 검사 합격", Thumb_Down: "→ 예: 불합격", Victory: "→ 예: 다음 항목", ILoveYou: "→ 고맙습니다",
+  };
+
+  let recognizer;
+  try {
+    status.textContent = "인식 모델을 내려받는 중… (처음 한 번, 몇 초)";
+    const fileset = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
+    recognizer = await GestureRecognizer.createFromOptions(fileset, {
+      baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task", delegate: "CPU" },
+      runningMode: "VIDEO", numHands: 2,
+    });
+  } catch (e) {
+    status.textContent = "모델을 불러오지 못했어요: " + e.message; console.error(e); return;
+  }
+  status.textContent = "준비 완료 — [카메라 켜기]를 눌러 주세요";
+  $("start").disabled = false;
+
+  const video = $("video"), canvas = $("canvas"), ctx = canvas.getContext("2d");
+  const BONES = [[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
+  let lastT = -1, frames = 0, fpsT = performance.now(), fps = 0;
+
+  $("start").onclick = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720, facingMode: "user" }, audio: false });
+      video.srcObject = stream; await video.play();
+      $("start").hidden = true; $("intro").hidden = true;
+      status.textContent = "손을 카메라 앞에 보여 주세요";
+      requestAnimationFrame(loop);
+    } catch (e) {
+      status.textContent = "카메라를 켤 수 없어요 — 브라우저 카메라 권한을 허용해 주세요 (" + e.name + ")";
+    }
+  };
+
+  function loop() {
+    if (video.readyState >= 2 && video.currentTime !== lastT) {
+      lastT = video.currentTime;
+      const w = video.videoWidth, h = video.videoHeight;
+      if (canvas.width !== w) { canvas.width = w; canvas.height = h; }
+      const res = recognizer.recognizeForVideo(video, performance.now());
+      ctx.clearRect(0, 0, w, h);
+      const labels = [];
+      (res.landmarks || []).forEach((lm, i) => {
+        ctx.lineWidth = 5; ctx.strokeStyle = "rgba(127,211,204,0.9)"; ctx.lineCap = "round";
+        for (const [a, b] of BONES) { ctx.beginPath(); ctx.moveTo(lm[a].x * w, lm[a].y * h); ctx.lineTo(lm[b].x * w, lm[b].y * h); ctx.stroke(); }
+        for (const p of lm) { ctx.fillStyle = "rgba(127,211,204,0.3)"; ctx.beginPath(); ctx.arc(p.x * w, p.y * h, 14, 0, 7); ctx.fill(); ctx.fillStyle = "#FFFFFF"; ctx.beginPath(); ctx.arc(p.x * w, p.y * h, 6, 0, 7); ctx.fill(); }
+        const g = res.gestures && res.gestures[i] && res.gestures[i][0];
+        const hand = res.handedness && res.handedness[i] && res.handedness[i][0];
+        if (g && g.categoryName !== "None") labels.push({ name: g.categoryName, score: g.score, side: hand ? (hand.categoryName === "Left" ? "오른손" : "왼손") : "" });
+      });
+      const n = (res.landmarks || []).length;
+      $("count").textContent = n ? `손 ${n}개 · 점 ${n * 21}개` : "손 없음";
+      if (labels.length) {
+        const top = labels.sort((a, b) => b.score - a.score)[0];
+        $("gesture").textContent = KO[top.name] || top.name;
+        $("meaning").textContent = MEANING[top.name] || "";
+        $("conf").textContent = `${top.side} · 확신 ${Math.round(top.score * 100)}%`;
+      } else {
+        $("gesture").textContent = n ? "…" : "손을 보여 주세요";
+        $("meaning").textContent = n ? "손 모양을 바꿔 보세요 (주먹 · 브이 · 엄지 척 · 손바닥)" : "";
+        $("conf").textContent = "";
+      }
+      frames++; const now = performance.now();
+      if (now - fpsT > 1000) { fps = frames; frames = 0; fpsT = now; $("fps").textContent = `${fps} fps · 기기 안에서만 처리 · 저장 안 함`; }
+    }
+    requestAnimationFrame(loop);
+  }
+})();
+
+</script>
+</body></html>
